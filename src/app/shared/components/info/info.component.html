@@ -1,0 +1,7 @@
+<div class="container">
+  <h2 class="title">{{ title }}</h2>
+  <p class="message" [innerHTML]="message"></p>
+  <app-button
+    (buttonClick)="buttonClick.emit()"
+    [text]="buttonText"></app-button>
+</div>

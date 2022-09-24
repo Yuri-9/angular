@@ -1,1 +1,7 @@
-<p>header works!</p>
+<header class="header">
+  <a href="/"><img class="'logo" src="assets/svg/logo.svg" /></a>
+  <div class="login">
+    <div>{{ user.name }}</div>
+    <app-button [text]="buttonText" (buttonClick)="handleLogout()"></app-button>
+  </div>
+</header>

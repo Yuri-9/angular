@@ -1,1 +1,8 @@
-<p>courses works!</p>
+<div>
+  <app-header></app-header>
+  <app-info
+    title="Your list is empty"
+    message="Please use the <b>'Add new course'</b> button to add your first course"
+    buttonText="Add new course"
+    (buttonClick)="addCourse()"></app-info>
+</div>
