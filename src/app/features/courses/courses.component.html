@@ -1,5 +1,13 @@
 <div>
   <app-header></app-header>
+  <app-course-list
+    [courses]="courses"
+    [canEdit]="true"
+    (showCourseEvent)="showCourse($event)"
+    (editCourseEvent)="editCourse($event)"
+    (deleteCourseEvent)="deleteCourse($event)">
+  </app-course-list>
+
   <app-info
     title="Your list is empty"
     message="Please use the <b>'Add new course'</b> button to add your first course"

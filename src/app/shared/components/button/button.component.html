@@ -1,1 +1,7 @@
-<button class="button" (click)="buttonClick.emit()">{{ text }}</button>
+<button
+  class="button"
+  [ngClass]="text ? 'hasPadding' : ''"
+  (click)="buttonClick.emit()">
+  {{ text }}
+  <fa-icon *ngIf="iconType" [icon]="iconType"></fa-icon>
+</button>

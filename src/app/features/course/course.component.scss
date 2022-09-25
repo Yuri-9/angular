@@ -1,0 +1,25 @@
+.course {
+  display: flex;
+  justify-content: space-between;
+  border: 2px #b7e0c7 solid;
+  padding: 20px;
+  gap: 30px;
+  & .title {
+    margin-top: 0;
+  }
+
+  & .detailed-content {
+    flex: 1 0 300px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  & .caption {
+    font-weight: 700;
+  }
+
+  & .buttons-container {
+    display: flex;
+    gap: 10px;
+  }
+}

@@ -1,1 +1,33 @@
-<p>course works!</p>
+<div class="course">
+  <div class="content">
+    <h3 class="title">{{ course.title }}</h3>
+    <p class="description">{{ course.description }}</p>
+  </div>
+  <div class="detailed-content">
+    <div class="detailed-content__item">
+      <span class="caption">Authors: </span>{{ course.authors.join(', ') }}
+    </div>
+    <div class="detailed-content__item">
+      <span class="caption">Duration: </span
+      >{{ course.duration * 60 * 1000 | date: 'HH:mm' }} hours
+    </div>
+    <div class="detailed-content__item">
+      <span class="caption">Created: </span
+      >{{ course.creationDate | date: 'dd.MM.yyyy' }}
+    </div>
+    <div class="buttons-container">
+      <app-button
+        text="Show course"
+        (buttonClick)="showCourse.emit()"></app-button>
+
+      <ng-template [ngIf]="canEdit">
+        <app-button
+          [iconType]="iconButtonEdit"
+          (buttonClick)="editCourse.emit()"></app-button>
+        <app-button
+          [iconType]="iconButtonDelete"
+          (buttonClick)="deleteCourse.emit()"></app-button>
+      </ng-template>
+    </div>
+  </div>
+</div>
