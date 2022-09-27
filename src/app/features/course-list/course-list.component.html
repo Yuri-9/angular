@@ -1,10 +1,17 @@
 <ul class="course-list">
   <li *ngFor="let course of courses">
-    <app-course
-      [course]="course"
-      [canEdit]="canEdit"
-      (showCourse)="showCourse(course.id)"
-      (editCourse)="editCourse(course.id)"
-      (deleteCourse)="deleteCourse(course.id)"></app-course>
+    <app-course [course]="course">
+      <app-button
+        text="Show course"
+        (clickButton)="showCourse(course.id)"></app-button>
+      <ng-template [ngIf]="canEdit">
+        <app-button
+          [icon]="iconButtonEdit"
+          (clickButton)="editCourse(course.id)"></app-button>
+        <app-button
+          [icon]="iconButtonDelete"
+          (clickButton)="deleteCourse(course.id)"></app-button>
+      </ng-template>
+    </app-course>
   </li>
 </ul>

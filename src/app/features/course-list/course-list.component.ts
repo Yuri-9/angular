@@ -1,5 +1,7 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { Course } from '../courses/courses.component';
+import { Course } from '../courses/courses.model';
+
+import { faPencil, faTrash } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-course-list',
@@ -7,6 +9,9 @@ import { Course } from '../courses/courses.component';
   styleUrls: ['./course-list.component.scss'],
 })
 export class CourseListComponent {
+  public iconButtonEdit = faPencil;
+  public iconButtonDelete = faTrash;
+
   @Input() courses: Course[] = [];
   @Input() canEdit = false;
   @Output() showCourseEvent = new EventEmitter();
@@ -15,16 +20,14 @@ export class CourseListComponent {
 
   constructor() {}
 
-  showCourse(value: string) {
-    this.showCourseEvent.emit(value);
+  showCourse(courseId: string) {
+    this.showCourseEvent.emit(courseId);
   }
-  editCourse(value: string) {
-    this.editCourseEvent.emit(value);
+  editCourse(courseId: string) {
+    this.editCourseEvent.emit(courseId);
   }
 
-  deleteCourse(value: string) {
-    console.log('delete', value);
-
-    this.deleteCourseEvent.emit(value);
+  deleteCourse(courseId: string) {
+    this.deleteCourseEvent.emit(courseId);
   }
 }

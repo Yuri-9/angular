@@ -1,14 +1,5 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import {
-  faPencil,
-  faTrash,
-  IconDefinition,
-} from '@fortawesome/free-solid-svg-icons';
-
-export enum BUTTON_ICON {
-  PENCIL = 'pencil',
-  BASKET = 'basket',
-}
+import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { IconDefinition } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-button',
@@ -17,9 +8,12 @@ export enum BUTTON_ICON {
 })
 export class ButtonComponent {
   @Input() text = '';
-  @Output() buttonClick = new EventEmitter();
-  @Input() iconType?: IconDefinition;
-  public hasPadding = false;
+  @Input() icon?: IconDefinition;
+  @Output() clickButton = new EventEmitter();
 
   constructor() {}
+
+  onClick() {
+    this.clickButton.emit();
+  }
 }

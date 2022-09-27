@@ -16,18 +16,7 @@
       >{{ course.creationDate | date: 'dd.MM.yyyy' }}
     </div>
     <div class="buttons-container">
-      <app-button
-        text="Show course"
-        (buttonClick)="showCourse.emit()"></app-button>
-
-      <ng-template [ngIf]="canEdit">
-        <app-button
-          [iconType]="iconButtonEdit"
-          (buttonClick)="editCourse.emit()"></app-button>
-        <app-button
-          [iconType]="iconButtonDelete"
-          (buttonClick)="deleteCourse.emit()"></app-button>
-      </ng-template>
+      <ng-content></ng-content>
     </div>
   </div>
 </div>

@@ -1,5 +1,8 @@
 <div>
-  <app-header></app-header>
+  <app-header>
+    <div>{{ user.name }}</div>
+    <app-button [text]="buttonText" (clickButton)="handleLogout()"></app-button>
+  </app-header>
   <app-course-list
     [courses]="courses"
     [canEdit]="true"
@@ -9,8 +12,9 @@
   </app-course-list>
 
   <app-info
-    title="Your list is empty"
-    message="Please use the <b>'Add new course'</b> button to add your first course"
-    buttonText="Add new course"
-    (buttonClick)="addCourse()"></app-info>
+    [option]="infoOption"
+    [isShowMessage]="!courses.length"
+    (addCourseEvent)="addCourse()">
+    <app-button (clickButton)="addCourse()" text="Add course"></app-button
+  ></app-info>
 </div>

@@ -1,23 +1,22 @@
-import { Component, OnInit } from '@angular/core';
-import { DataService } from 'src/app/shared/data.service';
+import { Component } from '@angular/core';
 
-export interface Course {
-  id: string;
-  title: string;
-  description: string;
-  creationDate: string;
-  duration: number;
-  authors: string[];
-}
+import { courses, Course, User } from './courses.model';
+
 @Component({
   selector: 'app-courses',
   templateUrl: './courses.component.html',
   styleUrls: ['./courses.component.scss'],
 })
-export class CoursesComponent implements OnInit {
-  courses: Course[] = [];
-
-  constructor(private dataService: DataService) {}
+export class CoursesComponent {
+  infoOption = {
+    title: 'Your list is empty',
+    message:
+      "Please use the <b>'Add new course'</b> button to add your first course",
+    buttonText: 'Add new course',
+  };
+  public courses: Course[] = courses;
+  public buttonText = 'Logout';
+  public user: User = { name: 'Vasia' };
 
   showCourse(id: string) {
     console.log('show course', id);
@@ -35,9 +34,7 @@ export class CoursesComponent implements OnInit {
     console.log('add course');
   }
 
-  ngOnInit(): void {
-    console.log('ngOnInit');
-
-    this.courses = this.dataService.getCourses();
+  handleLogout(): void {
+    console.log('logout');
   }
 }
