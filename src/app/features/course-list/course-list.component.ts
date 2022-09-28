@@ -2,6 +2,7 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { Course } from '../courses/courses.model';
 
 import { faPencil, faTrash } from '@fortawesome/free-solid-svg-icons';
+import { IModal } from 'src/app/shared/components';
 
 @Component({
   selector: 'app-course-list',
@@ -9,8 +10,16 @@ import { faPencil, faTrash } from '@fortawesome/free-solid-svg-icons';
   styleUrls: ['./course-list.component.scss'],
 })
 export class CourseListComponent {
-  public iconButtonEdit = faPencil;
-  public iconButtonDelete = faTrash;
+  iconButtonEdit = faPencil;
+  iconButtonDelete = faTrash;
+  private currentCourseId = '';
+  isOpenModal = false;
+  optionModalDelete: IModal = {
+    title: 'Delete course',
+    message: '',
+    okButtonText: 'Confirm',
+    cancelButtonText: 'Cancel',
+  };
 
   @Input() courses: Course[] = [];
   @Input() canEdit = false;
@@ -27,7 +36,18 @@ export class CourseListComponent {
     this.editCourseEvent.emit(courseId);
   }
 
-  deleteCourse(courseId: string) {
-    this.deleteCourseEvent.emit(courseId);
+  openModalDelete(course: Course) {
+    this.isOpenModal = true;
+    this.currentCourseId = course.id;
+    this.optionModalDelete.message = `Are you sure you want to delete the <b>${course.title}</b> course?`;
+  }
+
+  confirmButtonModalDelete() {
+    this.deleteCourseEvent.emit(this.currentCourseId);
+    this.closeModal();
+  }
+
+  closeModal() {
+    this.isOpenModal = false;
   }
 }

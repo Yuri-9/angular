@@ -10,8 +10,14 @@
           (clickButton)="editCourse(course.id)"></app-button>
         <app-button
           [icon]="iconButtonDelete"
-          (clickButton)="deleteCourse(course.id)"></app-button>
+          (clickButton)="openModalDelete(course)"></app-button>
       </ng-template>
     </app-course>
   </li>
 </ul>
+<app-modal
+  [option]="optionModalDelete"
+  [open]="isOpenModal"
+  (closeModalEvent)="closeModal()"
+  (okClickEvent)="confirmButtonModalDelete()">
+</app-modal>

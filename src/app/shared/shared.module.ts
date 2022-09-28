@@ -1,10 +1,14 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { HeaderComponent } from './components';
-import { ButtonComponent } from './components';
-import { InfoComponent } from './components/info/info.component';
+import {
+  HeaderComponent,
+  ButtonComponent,
+  InfoComponent,
+  ModalComponent,
+  SearchComponent,
+} from './components';
+
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { SearchComponent } from './components/search/search.component';
 
 @NgModule({
   declarations: [
@@ -12,8 +16,15 @@ import { SearchComponent } from './components/search/search.component';
     ButtonComponent,
     InfoComponent,
     SearchComponent,
+    ModalComponent,
   ],
   imports: [CommonModule, FontAwesomeModule],
-  exports: [HeaderComponent, ButtonComponent, InfoComponent, SearchComponent],
+  exports: [
+    HeaderComponent,
+    ButtonComponent,
+    InfoComponent,
+    SearchComponent,
+    ModalComponent,
+  ],
 })
 export class SharedModule {}
