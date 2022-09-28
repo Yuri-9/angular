@@ -15,8 +15,8 @@ export interface IModal {
   styleUrls: ['./modal.component.scss'],
 })
 export class ModalComponent {
-  public iconClose = faXmark;
-  public shouldHide = false;
+  iconClose = faXmark;
+  shouldHide = false;
 
   @Input() option: IModal = {
     title: '',

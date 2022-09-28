@@ -29,25 +29,25 @@ export class CourseListComponent {
 
   constructor() {}
 
-  showCourse(courseId: string) {
+  showCourse(courseId: string): void {
     this.showCourseEvent.emit(courseId);
   }
   editCourse(courseId: string) {
     this.editCourseEvent.emit(courseId);
   }
 
-  openModalDelete(course: Course) {
+  openModalDelete(course: Course): void {
     this.isOpenModal = true;
     this.currentCourseId = course.id;
     this.optionModalDelete.message = `Are you sure you want to delete the <b>${course.title}</b> course?`;
   }
 
-  confirmButtonModalDelete() {
+  confirmButtonModalDelete(): void {
     this.deleteCourseEvent.emit(this.currentCourseId);
     this.closeModal();
   }
 
-  closeModal() {
+  closeModal(): void {
     this.isOpenModal = false;
   }
 }

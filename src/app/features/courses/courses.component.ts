@@ -14,9 +14,9 @@ export class CoursesComponent {
       "Please use the <b>'Add new course'</b> button to add your first course",
     buttonText: 'Add new course',
   };
-  public courses: Course[] = courses;
-  public buttonText = 'Logout';
-  public user: User = { name: 'Vasia' };
+  courses: Course[] = courses;
+  buttonText = 'Logout';
+  user: User = { name: 'Vasia' };
 
   showCourse(id: string) {
     console.log('show course', id);
