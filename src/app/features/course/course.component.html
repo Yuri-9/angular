@@ -1,0 +1,22 @@
+<div class="course">
+  <div class="content">
+    <h3 class="title">{{ course.title }}</h3>
+    <p class="description">{{ course.description }}</p>
+  </div>
+  <div class="detailed-content">
+    <div class="detailed-content__item">
+      <span class="caption">Authors: </span>{{ joinAuthors() }}
+    </div>
+    <div class="detailed-content__item">
+      <span class="caption">Duration: </span
+      >{{ course.duration * 60 * 1000 | date: 'HH:mm' }} hours
+    </div>
+    <div class="detailed-content__item">
+      <span class="caption">Created: </span
+      >{{ course.creationDate | date: 'dd.MM.yyyy' }}
+    </div>
+    <div class="buttons-container">
+      <ng-content></ng-content>
+    </div>
+  </div>
+</div>

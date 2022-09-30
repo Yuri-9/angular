@@ -1,0 +1,20 @@
+<div>
+  <app-header>
+    <div>{{ user.name }}</div>
+    <app-button [text]="buttonText" (clickButton)="handleLogout()"></app-button>
+  </app-header>
+  <app-course-list
+    [courses]="courses"
+    [canEdit]="true"
+    (showCourseEvent)="showCourse($event)"
+    (editCourseEvent)="editCourse($event)"
+    (deleteCourseEvent)="deleteCourse($event)">
+  </app-course-list>
+
+  <app-info
+    [option]="infoOption"
+    [isShowMessage]="!courses.length"
+    (addCourseEvent)="addCourse()">
+    <app-button (clickButton)="addCourse()" text="Add course"> </app-button
+  ></app-info>
+</div>

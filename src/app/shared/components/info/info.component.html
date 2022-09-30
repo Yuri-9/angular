@@ -1,0 +1,7 @@
+<div class="container">
+  <ng-template [ngIf]="isShowMessage">
+    <h2 class="title">{{ option.title }}</h2>
+    <p class="message" [innerHTML]="option.message"></p
+  ></ng-template>
+  <ng-content></ng-content>
+</div>
