@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Output } from '@angular/core';
+import { APP_ROUTS } from 'src/app/app.model';
 
 import { courses, Course, User } from './courses.model';
 
@@ -18,6 +19,8 @@ export class CoursesComponent {
   buttonText = 'Logout';
   user: User = { name: 'Vasia' };
 
+  @Output() logoutEvent = new EventEmitter();
+
   showCourse(id: string) {
     console.log('show course', id);
   }
@@ -35,6 +38,6 @@ export class CoursesComponent {
   }
 
   handleLogout(): void {
-    console.log('logout');
+    this.logoutEvent.emit(APP_ROUTS.LOGIN);
   }
 }

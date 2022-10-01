@@ -1,3 +1,8 @@
 <div>
-  <app-courses></app-courses>
+  <app-courses
+    *ngIf="selectedRoute === APP_ROUTS.COURSES"
+    (logoutEvent)="handleRoute($event)"></app-courses>
+  <app-login
+    *ngIf="selectedRoute === APP_ROUTS.LOGIN"
+    (loginEvent)="handleRoute($event)"></app-login>
 </div>

@@ -1,1 +1,32 @@
-<p>login works!</p>
+<div>
+  <app-header> </app-header>
+  <div class="login_container">
+    <form class="login_form">
+      <legend class="title">Login</legend>
+      <fieldset class="login_fieldset">
+        <label class="label" for="email">
+          Email
+          <input
+            class="input"
+            required
+            [formControl]="emailControl"
+            appEmailValidate />
+          <div
+            class="alert"
+            name="email"
+            *ngIf="
+              emailControl.errors &&
+              (emailControl.dirty || emailControl.touched)
+            ">
+            <p *ngIf="emailControl.errors?.['required']">Email is required</p>
+            <p *ngIf="emailControl.errors?.['email']" #emailHelperText>
+              {{ emailControl.errors['email'].value }}
+            </p>
+          </div>
+        </label>
+      </fieldset>
+    </form>
+  </div>
+
+  <app-button [text]="buttonText" (clickButton)="login()"></app-button>
+</div>

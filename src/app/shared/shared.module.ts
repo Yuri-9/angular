@@ -9,6 +9,8 @@ import {
 } from './components';
 
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { EmailValidatorDirective } from './directive/email-validator.directive';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -17,14 +19,17 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
     InfoComponent,
     SearchComponent,
     ModalComponent,
+    EmailValidatorDirective,
   ],
-  imports: [CommonModule, FontAwesomeModule],
+  imports: [CommonModule, FontAwesomeModule, FormsModule, ReactiveFormsModule],
   exports: [
     HeaderComponent,
     ButtonComponent,
     InfoComponent,
     SearchComponent,
     ModalComponent,
+    EmailValidatorDirective,
+    ReactiveFormsModule,
   ],
 })
 export class SharedModule {}

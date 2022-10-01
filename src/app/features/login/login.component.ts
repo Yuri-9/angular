@@ -1,4 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { FormControl } from '@angular/forms';
+import { APP_ROUTS } from 'src/app/app.model';
 
 @Component({
   selector: 'app-login',
@@ -6,9 +8,18 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./login.component.scss'],
 })
 export class LoginComponent implements OnInit {
-  constructor() {}
+  buttonText = 'Login';
+  emailControl = new FormControl();
+
+  @Output() loginEvent = new EventEmitter();
+
+  login() {
+    this.loginEvent.emit(APP_ROUTS.COURSES);
+  }
 
   ngOnInit(): void {
-    console.log('LoginComponent');
+    this.emailControl.valueChanges.subscribe(value =>
+      console.log('email', value)
+    );
   }
 }
