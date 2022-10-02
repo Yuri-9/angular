@@ -1,2 +1,84 @@
-<p>registration works!</p>
-<a href="#" (click)="navigateToLogin($event)">Login</a>
+<div>
+  <app-header> </app-header>
+  <div class="login_container">
+    <form class="login_form" [formGroup]="form" (ngSubmit)="onSubmit()">
+      <legend class="title">Registration</legend>
+      <fieldset class="login_fieldset">
+        <label class="label" for="email">
+          Name
+          <input class="input" type="text" required formControlName="name" />
+          <div
+            class="alert"
+            *ngIf="
+              form.controls['name'].errors &&
+              (form.controls['name'].dirty || form.controls['name'].touched)
+            ">
+            <p *ngIf="form.controls['name'].errors?.['required']">
+              Name is required
+            </p>
+          </div>
+        </label>
+        <label class="label" for="email">
+          Email
+          <input
+            class="input"
+            type="email"
+            required
+            formControlName="email"
+            appEmailValidate />
+          <div
+            class="alert"
+            name="email"
+            *ngIf="
+              form.controls['email'].errors &&
+              (form.controls['email'].dirty || form.controls['email'].touched)
+            ">
+            <p *ngIf="form.controls['email'].errors?.['required']">
+              Email is required
+            </p>
+            <p *ngIf="form.controls['email'].errors?.['email']">
+              {{ form.controls['email'].errors['email'].value }}
+            </p>
+          </div>
+        </label>
+        <label class="label" for="password">
+          Password
+          <input
+            class="input"
+            required
+            minlength="8"
+            [type]="hidePassword ? 'password' : 'text'"
+            formControlName="password" />
+          <span class="password-icon" (click)="togglePassword()">
+            <fa-icon
+              class=""
+              size="xs"
+              [icon]="hidePassword ? eyeIcon : eyeSlashIcon">
+            </fa-icon
+          ></span>
+
+          <div
+            class="alert"
+            name="password"
+            *ngIf="
+              form.controls['password'].errors &&
+              (form.controls['password'].dirty ||
+                form.controls['password'].touched)
+            ">
+            <p *ngIf="form.controls['password'].errors?.['required']">
+              Password is required
+            </p>
+            <p *ngIf="form.controls['password'].errors?.['minlength']">
+              Password must be at least 8 characters
+            </p>
+          </div>
+        </label>
+        <app-button type="submit">Registration</app-button>
+      </fieldset>
+    </form>
+    <div class="question">
+      <p>If you have an account you can</p>
+      <a href="#" (click)="navigateToLogin($event)">Login</a>
+    </div>
+  </div>
+</div>

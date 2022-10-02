@@ -1,7 +1,7 @@
-import { Component, EventEmitter, Output } from '@angular/core';
-import { APP_ROUTS } from 'src/app/app.model';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { APP_ROUTS, User } from 'src/app/app.model';
 
-import { courses, Course, User } from './courses.model';
+import { courses, Course } from './courses.model';
 
 @Component({
   selector: 'app-courses',
@@ -17,9 +17,9 @@ export class CoursesComponent {
   };
   courses: Course[] = courses;
   buttonText = 'Logout';
-  user: User = { name: 'Vasia' };
 
-  @Output() logoutEvent = new EventEmitter();
+  @Input() user: User = { name: '', email: '', password: '' };
+  @Output() navigateEvent = new EventEmitter();
 
   showCourse(id: string) {
     console.log('show course', id);
@@ -38,6 +38,6 @@ export class CoursesComponent {
   }
 
   handleLogout(): void {
-    this.logoutEvent.emit(APP_ROUTS.LOGIN);
+    this.navigateEvent.emit(APP_ROUTS.LOGIN);
   }
 }

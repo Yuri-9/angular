@@ -1,7 +1,8 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
-import { FormControl, FormGroup, NgForm } from '@angular/forms';
-import { APP_ROUTS } from 'src/app/app.model';
+import { FormControl } from '@angular/forms';
+import { APP_ROUTS, User } from 'src/app/app.model';
 import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
+import { format } from 'prettier';
 
 @Component({
   selector: 'app-login',
@@ -15,21 +16,32 @@ export class LoginComponent implements OnInit {
   hidePassword = true;
   eyeIcon = faEye;
   eyeSlashIcon = faEyeSlash;
+  //for development
+  user: User = {
+    name: 'Petya',
+    email: 'Petya@gmai.sdf',
+    password: 'adsdfasf',
+  };
 
-  @Output() loginEvent = new EventEmitter();
+  @Output() navigateEvent = new EventEmitter<APP_ROUTS>();
+  @Output() loginEvent = new EventEmitter<User>();
 
   login() {
     this.emailControl.markAsDirty();
     this.passwordControl.markAsDirty();
 
     const hasErrors = this.emailControl.errors || this.passwordControl.errors;
+    if (hasErrors) {
+      return;
+    }
 
-    !hasErrors && this.loginEvent.emit(APP_ROUTS.COURSES);
+    this.loginEvent.emit(this.user);
+    this.navigateEvent.emit(APP_ROUTS.COURSES);
   }
 
   navigateToRegistration(event: Event) {
     event.preventDefault();
-    this.loginEvent.emit(APP_ROUTS.REGISTRATION);
+    this.navigateEvent.emit(APP_ROUTS.REGISTRATION);
   }
 
   togglePassword() {
@@ -37,12 +49,16 @@ export class LoginComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.emailControl.statusChanges.subscribe(value =>
-      console.log('email', value)
-    );
+    //for development
+    this.emailControl.setValue(this.user.email);
+    this.passwordControl.setValue(this.user.password);
 
-    this.passwordControl.valueChanges.subscribe(value =>
-      console.log('password', this.passwordControl.errors)
-    );
+    this.emailControl.valueChanges.subscribe(value => {
+      this.user.email = value !== null ? value : '';
+    });
+
+    this.passwordControl.valueChanges.subscribe(value => {
+      this.user.password = value !== null ? value : '';
+    });
   }
 }

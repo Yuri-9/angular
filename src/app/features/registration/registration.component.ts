@@ -1,4 +1,6 @@
 import { Component, EventEmitter, Output } from '@angular/core';
+import { FormControl, FormGroup } from '@angular/forms';
+import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 import { APP_ROUTS } from 'src/app/app.model';
 
 @Component({
@@ -7,11 +9,33 @@ import { APP_ROUTS } from 'src/app/app.model';
   styleUrls: ['./registration.component.scss'],
 })
 export class RegistrationComponent {
-  constructor() {}
+  hidePassword = true;
+  eyeIcon = faEye;
+  eyeSlashIcon = faEyeSlash;
+  form: FormGroup = new FormGroup({
+    name: new FormControl(''),
+    email: new FormControl(''),
+    password: new FormControl(''),
+  });
+
+  @Output() navigateEvent = new EventEmitter();
   @Output() registrationEvent = new EventEmitter();
+
+  onSubmit() {
+    if (!this.form.valid) {
+      this.form.markAllAsTouched();
+    } else {
+      this.navigateEvent.emit(APP_ROUTS.LOGIN);
+      this.registrationEvent.emit(this.form.value);
+    }
+  }
 
   navigateToLogin(event: Event) {
     event.preventDefault();
-    this.registrationEvent.emit(APP_ROUTS.LOGIN);
+    this.navigateEvent.emit(APP_ROUTS.LOGIN);
+  }
+
+  togglePassword() {
+    this.hidePassword = !this.hidePassword;
   }
 }

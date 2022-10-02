@@ -1,5 +1,5 @@
 import { Component, ViewEncapsulation } from '@angular/core';
-import { APP_ROUTS } from './app.model';
+import { APP_ROUTS, User } from './app.model';
 
 @Component({
   selector: 'app-root',
@@ -11,8 +11,21 @@ export class AppComponent {
   title = 'angular';
   selectedRoute: APP_ROUTS = APP_ROUTS.LOGIN;
   APP_ROUTS = APP_ROUTS;
+  user: User = {
+    name: '',
+    email: '',
+    password: '',
+  };
 
   handleRoute(route: APP_ROUTS) {
     this.selectedRoute = route;
+  }
+
+  handleRegistration(event: Event) {
+    console.log('event', event);
+  }
+
+  handleLogin(user: User) {
+    this.user = user;
   }
 }
