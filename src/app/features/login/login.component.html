@@ -1,13 +1,14 @@
 <div>
   <app-header> </app-header>
   <div class="login_container">
-    <form class="login_form">
+    <form class="login_form" (ngSubmit)="login()">
       <legend class="title">Login</legend>
       <fieldset class="login_fieldset">
         <label class="label" for="email">
           Email
           <input
             class="input"
+            type="email"
             required
             [formControl]="emailControl"
             appEmailValidate />
@@ -24,9 +25,43 @@
             </p>
           </div>
         </label>
+        <label class="label" for="password">
+          Password
+          <input
+            class="input"
+            required
+            minlength="8"
+            [type]="hidePassword ? 'password' : 'text'"
+            [formControl]="passwordControl" />
+          <span class="password-icon" (click)="togglePassword()">
+            <fa-icon
+              class=""
+              size="xs"
+              [icon]="hidePassword ? eyeIcon : eyeSlashIcon">
+            </fa-icon
+          ></span>
+
+          <div
+            class="alert"
+            name="password"
+            *ngIf="
+              passwordControl.errors &&
+              (passwordControl.dirty || passwordControl.touched)
+            ">
+            <p *ngIf="passwordControl.errors?.['required']">
+              Password is required
+            </p>
+            <p *ngIf="passwordControl.errors?.['minlength']">
+              Password must be at least 8 characters
+            </p>
+          </div>
+        </label>
+        <app-button type="submit" [text]="buttonText"></app-button>
       </fieldset>
     </form>
+    <div class="registration">
+      <p>If you don't have an account you can</p>
+      <a href="#" (click)="navigateToRegistration($event)">Registration</a>
+    </div>
   </div>
-
-  <app-button [text]="buttonText" (clickButton)="login()"></app-button>
 </div>

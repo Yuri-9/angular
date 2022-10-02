@@ -6,10 +6,17 @@ import { AppComponent } from './app.component';
 
 import { CoursesModule } from './features/courses/courses.module';
 import { LoginModule } from './features/login/login.module';
+import { RegistrationModule } from './features/registration/registration.module';
 
 @NgModule({
   declarations: [AppComponent],
-  imports: [BrowserModule, AppRoutingModule, CoursesModule, LoginModule],
+  imports: [
+    BrowserModule,
+    AppRoutingModule,
+    CoursesModule,
+    LoginModule,
+    RegistrationModule,
+  ],
   providers: [],
   bootstrap: [AppComponent],
 })

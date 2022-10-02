@@ -30,6 +30,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     ModalComponent,
     EmailValidatorDirective,
     ReactiveFormsModule,
+    FontAwesomeModule,
   ],
 })
 export class SharedModule {}

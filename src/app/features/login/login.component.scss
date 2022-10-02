@@ -14,17 +14,19 @@
 }
 
 .login_fieldset {
-  direction: flex;
+  display: flex;
   flex-direction: column;
   gap: 20px;
   align-items: center;
   max-width: 300px;
   margin: 0 auto;
   border: none;
+  margin-bottom: 20px;
 }
 
 .label {
   display: flex;
+  width: 100%;
   flex-direction: column;
   gap: 3px;
   font-weight: bold;
@@ -56,4 +58,16 @@
   color: $danger;
   font-weight: 300;
   font-size: 12px;
+}
+
+.password-icon {
+  position: absolute;
+  right: 5px;
+  top: 50%;
+  transform: translateY(-30%);
+  cursor: pointer;
+}
+
+.registration {
+  text-align: center;
 }
