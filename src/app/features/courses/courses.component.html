@@ -3,8 +3,10 @@
     <div>{{ user.email }}</div>
     <app-button [text]="buttonText" (clickButton)="handleLogout()"></app-button>
   </app-header>
+  <app-search placeholder="Name course" (searchEvent)="searchCourse($event)">
+  </app-search>
   <app-course-list
-    [courses]="courses"
+    [courses]="filteredCourses"
     [canEdit]="true"
     (showCourseEvent)="showCourse($event)"
     (editCourseEvent)="editCourse($event)"

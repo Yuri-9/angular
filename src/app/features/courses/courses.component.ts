@@ -17,6 +17,7 @@ export class CoursesComponent {
   };
   courses: Course[] = courses;
   buttonText = 'Logout';
+  filterString = '';
 
   @Input() user: User = { name: '', email: '', password: '' };
   @Output() navigateEvent = new EventEmitter();
@@ -39,5 +40,14 @@ export class CoursesComponent {
 
   handleLogout(): void {
     this.navigateEvent.emit(APP_ROUTS.LOGIN);
+  }
+
+  searchCourse(nameCourse: string) {
+    this.filterString = nameCourse;
+  }
+
+  get filteredCourses() {
+    const regExpFilterString = new RegExp(this.filterString, 'i');
+    return this.courses.filter(({ title }) => title.match(regExpFilterString));
   }
 }
