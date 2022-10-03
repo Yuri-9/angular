@@ -21,6 +21,18 @@ export class RegistrationComponent {
   @Output() navigateEvent = new EventEmitter();
   @Output() registrationEvent = new EventEmitter();
 
+  get name(): any {
+    return this.form.get('name');
+  }
+
+  get email(): any {
+    return this.form.get('email');
+  }
+
+  get password(): any {
+    return this.form.get('password');
+  }
+
   onSubmit() {
     if (!this.form.valid) {
       this.form.markAllAsTouched();

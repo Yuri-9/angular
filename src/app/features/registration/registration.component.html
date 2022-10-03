@@ -9,13 +9,8 @@
           <input class="input" type="text" required formControlName="name" />
           <div
             class="alert"
-            *ngIf="
-              form.controls['name'].errors &&
-              (form.controls['name'].dirty || form.controls['name'].touched)
-            ">
-            <p *ngIf="form.controls['name'].errors?.['required']">
-              Name is required
-            </p>
+            *ngIf="name.errors && (name.dirty || name.touched)">
+            <p *ngIf="name.errors?.['required']">Name is required</p>
           </div>
         </label>
         <label class="label" for="email">
@@ -29,15 +24,10 @@
           <div
             class="alert"
             name="email"
-            *ngIf="
-              form.controls['email'].errors &&
-              (form.controls['email'].dirty || form.controls['email'].touched)
-            ">
-            <p *ngIf="form.controls['email'].errors?.['required']">
-              Email is required
-            </p>
-            <p *ngIf="form.controls['email'].errors?.['email']">
-              {{ form.controls['email'].errors['email'].value }}
+            *ngIf="email.errors && (email.dirty || email.touched)">
+            <p *ngIf="email.errors?.['required']">Email is required</p>
+            <p *ngIf="email.errors?.['email']">
+              {{ email.errors['email'].value }}
             </p>
           </div>
         </label>
@@ -60,15 +50,9 @@
           <div
             class="alert"
             name="password"
-            *ngIf="
-              form.controls['password'].errors &&
-              (form.controls['password'].dirty ||
-                form.controls['password'].touched)
-            ">
-            <p *ngIf="form.controls['password'].errors?.['required']">
-              Password is required
-            </p>
-            <p *ngIf="form.controls['password'].errors?.['minlength']">
+            *ngIf="password.errors && (password.dirty || password.touched)">
+            <p *ngIf="password.errors?.['required']">Password is required</p>
+            <p *ngIf="password.errors?.['minlength']">
               Password must be at least 8 characters
             </p>
           </div>
