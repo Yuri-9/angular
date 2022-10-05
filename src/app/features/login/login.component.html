@@ -1,27 +1,26 @@
 <div>
   <app-header> </app-header>
   <div class="login_container">
-    <form (ngSubmit)="login()">
+    <form class="login_form" (ngSubmit)="login()" #formLogin="ngForm">
       <legend class="title">Login</legend>
-      <fieldset class="login_fieldset">
+      <fieldset class="login_fieldset" ngModelGroup="name">
         <label class="label" for="email">
           Email
           <input
             class="input"
             type="email"
             required
-            [formControl]="emailControl"
+            [(ngModel)]="model.email"
+            #email="ngModel"
+            name="email"
             appEmailValidate />
           <div
             class="alert"
             name="email"
-            *ngIf="
-              emailControl.errors &&
-              (emailControl.dirty || emailControl.touched)
-            ">
-            <p *ngIf="emailControl.errors?.['required']">Email is required</p>
-            <p *ngIf="emailControl.errors?.['email']" #emailHelperText>
-              {{ emailControl.errors['email'].value }}
+            *ngIf="email.errors && (email.dirty || email.touched)">
+            <p *ngIf="email.errors?.['required']">Email is required</p>
+            <p *ngIf="email.errors?.['email']" #emailHelperText>
+              {{ email.errors['email'].value }}
             </p>
           </div>
         </label>
@@ -32,7 +31,9 @@
             required
             minlength="8"
             [type]="hidePassword ? 'password' : 'text'"
-            [formControl]="passwordControl" />
+            [(ngModel)]="model.password"
+            #password="ngModel"
+            name="password" />
           <span class="password-icon" (click)="togglePassword()">
             <fa-icon
               class=""
@@ -44,19 +45,14 @@
           <div
             class="alert"
             name="password"
-            *ngIf="
-              passwordControl.errors &&
-              (passwordControl.dirty || passwordControl.touched)
-            ">
-            <p *ngIf="passwordControl.errors?.['required']">
-              Password is required
-            </p>
-            <p *ngIf="passwordControl.errors?.['minlength']">
+            *ngIf="password.errors && (password.dirty || password.touched)">
+            <p *ngIf="password.errors?.['required']">Password is required</p>
+            <p *ngIf="password.errors?.['minlength']">
               Password must be at least 8 characters
             </p>
           </div>
         </label>
-        <app-button type="submit" [text]="buttonText"></app-button>
+        <app-button>Login</app-button>
       </fieldset>
     </form>
     <div class="question">

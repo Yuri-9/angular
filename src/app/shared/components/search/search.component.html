@@ -3,6 +3,6 @@
     class="input"
     type="text"
     [placeholder]="placeholder"
-    [formControl]="searchControl" />
+    [(ngModel)]="searchValue" />
   <app-button (click)="search()">Search</app-button>
 </div>

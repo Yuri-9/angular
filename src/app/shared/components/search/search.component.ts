@@ -1,5 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { FormControl } from '@angular/forms';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 
 @Component({
   selector: 'app-search',
@@ -7,18 +6,12 @@ import { FormControl } from '@angular/forms';
   styleUrls: ['./search.component.scss'],
 })
 export class SearchComponent {
-  constructor() {}
+  searchValue = '';
+
   @Input() placeholder = '';
   @Output() searchEvent = new EventEmitter<string>();
 
-  searchControl = new FormControl('');
-
   search() {
-    console.log('this.searchControl.value', this.searchControl.value);
-    const searchString = this.searchControl.value
-      ? this.searchControl.value
-      : '';
-
-    this.searchEvent.emit(searchString);
+    this.searchEvent.emit(this.searchValue);
   }
 }
