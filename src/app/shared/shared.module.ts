@@ -11,7 +11,10 @@ import {
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { EmailValidatorDirective } from './directive/email-validator.directive';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { NumberToHoursMinutesPipe } from './pipe/number-to-hours-minutes.pipe';
+
+import { CreationDate } from './pipe/creation-date';
+import { Duration } from './pipe/duration';
+import { StringJoiner } from './pipe/string-joiner';
 
 @NgModule({
   declarations: [
@@ -21,7 +24,9 @@ import { NumberToHoursMinutesPipe } from './pipe/number-to-hours-minutes.pipe';
     SearchComponent,
     ModalComponent,
     EmailValidatorDirective,
-    NumberToHoursMinutesPipe,
+    Duration,
+    CreationDate,
+    StringJoiner,
   ],
   imports: [CommonModule, FontAwesomeModule, FormsModule, ReactiveFormsModule],
   providers: [DatePipe],
@@ -34,7 +39,9 @@ import { NumberToHoursMinutesPipe } from './pipe/number-to-hours-minutes.pipe';
     EmailValidatorDirective,
     ReactiveFormsModule,
     FontAwesomeModule,
-    NumberToHoursMinutesPipe,
+    Duration,
+    CreationDate,
+    StringJoiner,
   ],
 })
 export class SharedModule {}

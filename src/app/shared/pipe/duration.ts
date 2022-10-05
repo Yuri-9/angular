@@ -1,9 +1,9 @@
 import { Pipe, PipeTransform } from '@angular/core';
 
 @Pipe({
-  name: 'numberToHoursMinutes',
+  name: 'duration',
 })
-export class NumberToHoursMinutesPipe implements PipeTransform {
+export class Duration implements PipeTransform {
   transform(minutes: number) {
     const minLimit = 0;
     const maxLimit = 1440;

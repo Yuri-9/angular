@@ -5,15 +5,16 @@
   </div>
   <div class="detailed-content">
     <div class="detailed-content__item">
-      <span class="caption">Authors: </span>{{ joinAuthors() }}
+      <span class="caption">Authors: </span
+      >{{ course.authors | stringJoiner: ', ' }}
     </div>
     <div class="detailed-content__item">
       <span class="caption">Duration: </span
-      >{{ course.duration * 60 * 1000 | date: 'HH:mm' }} hours
+      >{{ course.duration | duration }} hours
     </div>
     <div class="detailed-content__item">
       <span class="caption">Created: </span
-      >{{ course.creationDate | date: 'dd.MM.yyyy' }}
+      >{{ course.creationDate | creationDate }}
     </div>
     <div class="buttons-container">
       <ng-content></ng-content>
