@@ -9,7 +9,7 @@ import { APP_ROUTS, User } from './app.model';
 })
 export class AppComponent {
   title = 'angular';
-  selectedRoute: APP_ROUTS = APP_ROUTS.LOGIN;
+  selectedRoute: APP_ROUTS = APP_ROUTS.COURSES;
   APP_ROUTS = APP_ROUTS;
   user: User = {
     name: '',

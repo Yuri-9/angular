@@ -1,9 +1,9 @@
 <div>
   <app-header> </app-header>
-  <div class="login_container">
-    <form class="login_form" [formGroup]="form" (ngSubmit)="onSubmit()">
+  <div class="registration_container">
+    <form [formGroup]="form" (ngSubmit)="onSubmit()">
       <legend class="title">Registration</legend>
-      <fieldset class="login_fieldset">
+      <fieldset class="registration_fieldset">
         <label class="label" for="email">
           Name
           <input class="input" type="text" required formControlName="name" />

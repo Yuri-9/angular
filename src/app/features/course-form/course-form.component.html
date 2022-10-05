@@ -1,0 +1,108 @@
+<form [formGroup]="form" class="'form" novalidate (ngSubmit)="onSubmit()">
+  <legend class="visually-hidden">Title and description</legend>
+  <fieldset class="course-form-fieldset">
+    <div class="title_container">
+      <label class="label" for="email">
+        Title
+        <input class="input" type="text" required formControlName="title" />
+        <div
+          class="alert"
+          *ngIf="title.errors && (title.dirty || title.touched)">
+          <p *ngIf="title.errors?.['required']">Title is required</p>
+        </div>
+      </label>
+      <app-button>Create Course</app-button>
+    </div>
+    <label class="label" for="description">
+      Description
+      <textarea
+        class="textarea"
+        type="description"
+        required
+        formControlName="description">
+      </textarea>
+      <div
+        class="alert"
+        name="description"
+        *ngIf="
+          description.errors && (description.dirty || description.touched)
+        ">
+        <p *ngIf="description.errors?.['required']">Description is required</p>
+        <p *ngIf="description.errors?.['description']">
+          {{ description.errors['description'].value }}
+        </p>
+      </div>
+    </label>
+  </fieldset>
+  <div class="additional-fields">
+    <div class="additional-fields_item">
+      <fieldset class="course-form-fieldset authors" [formGroup]="formAuthor">
+        <legend class="legend">Add authors</legend>
+        <label class="label" for="authorName">
+          Authors name
+          <input class="input" type="text" formControlName="authorName" />
+          <div
+            class="alert"
+            name="authorName"
+            *ngIf="
+              authorName.errors && (authorName.dirty || authorName.touched)
+            ">
+            <p *ngIf="authorName.errors?.['string']">
+              {{ authorName.errors['string'].value }}
+            </p>
+          </div>
+        </label>
+
+        <app-button (click)="createAuthor($event)" type="submit" form="form1">
+          Create author
+        </app-button>
+      </fieldset>
+      <fieldset class="course-form-fieldset">
+        <legend class="legend">Duration</legend>
+        <label class="label" for="duration">
+          Duration
+          <input
+            class="input"
+            type="number"
+            required
+            formControlName="duration" />
+          <div
+            class="alert"
+            *ngIf="duration.errors && (duration.dirty || duration.touched)">
+            <p *ngIf="duration.errors?.['required']">Duration is required</p>
+            <p *ngIf="duration.errors?.['min']">Duration should at least 0</p>
+            <p *ngIf="duration.errors?.['max']">
+              Duration no more than 24 hours
+            </p>
+          </div>
+        </label>
+        <p class="duration_view">
+          Duration:
+          <span>{{ duration.value | numberToHoursMinutes }}</span> hours
+        </p>
+      </fieldset>
+    </div>
+    <fieldset
+      class="course-form-fieldset additional-fields_item"
+      [formGroup]="formAuthorList">
+      <legend class="legend">Authors list</legend>
+      <ul formArrayName="authorList">
+        <li
+          class="author-item"
+          *ngFor="let author of authorListControls; let i = index">
+          <input
+            class="disable-input"
+            formControlName="{{ i }}"
+            type="text"
+            [attr.disabled]="true" />
+          <app-button (click)="deleteAuthor($event, i)"
+            >Delete author</app-button
+          >
+        </li>
+      </ul>
+      <div class="alert" *ngIf="authorList.errors && isSubmitted">
+        <p *ngIf="authorList.errors?.['required']">Authors list is required</p>
+      </div>
+    </fieldset>
+  </div>
+</form>

@@ -18,6 +18,7 @@ export class CoursesComponent {
   courses: Course[] = courses;
   buttonText = 'Logout';
   filterString = '';
+  isEditCourse = false;
 
   @Input() user: User = { name: '', email: '', password: '' };
   @Output() navigateEvent = new EventEmitter();
@@ -34,8 +35,8 @@ export class CoursesComponent {
     this.courses = this.courses.filter(course => course.id !== id);
   }
 
-  addCourse() {
-    console.log('add course');
+  addCourseClickButton() {
+    this.isEditCourse = true;
   }
 
   handleLogout(): void {
@@ -44,6 +45,11 @@ export class CoursesComponent {
 
   searchCourse(nameCourse: string) {
     this.filterString = nameCourse;
+  }
+
+  createCourse(course: Course) {
+    this.courses.push(course);
+    this.isEditCourse = false;
   }
 
   get filteredCourses() {

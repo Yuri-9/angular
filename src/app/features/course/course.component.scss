@@ -7,6 +7,9 @@
   & .title {
     margin-top: 0;
   }
+  & .content {
+    flex: 1 1 100%;
+  }
 
   & .detailed-content {
     flex: 1 0 300px;

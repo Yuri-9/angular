@@ -3,20 +3,23 @@
     <div>{{ user.email }}</div>
     <app-button [text]="buttonText" (clickButton)="handleLogout()"></app-button>
   </app-header>
-  <app-search placeholder="Name course" (searchEvent)="searchCourse($event)">
-  </app-search>
-  <app-course-list
-    [courses]="filteredCourses"
-    [canEdit]="true"
-    (showCourseEvent)="showCourse($event)"
-    (editCourseEvent)="editCourse($event)"
-    (deleteCourseEvent)="deleteCourse($event)">
-  </app-course-list>
+  <ng-container *ngIf="!isEditCourse">
+    <app-search placeholder="Name course" (searchEvent)="searchCourse($event)">
+    </app-search>
+    <app-course-list
+      [courses]="filteredCourses"
+      [canEdit]="true"
+      (showCourseEvent)="showCourse($event)"
+      (editCourseEvent)="editCourse($event)"
+      (deleteCourseEvent)="deleteCourse($event)">
+    </app-course-list>
 
-  <app-info
-    [option]="infoOption"
-    [isShowMessage]="!courses.length"
-    (addCourseEvent)="addCourse()">
-    <app-button (clickButton)="addCourse()" text="Add course"> </app-button
-  ></app-info>
+    <app-info [option]="infoOption" [isShowMessage]="!courses.length">
+      <app-button (clickButton)="addCourseClickButton()" text="Add course">
+      </app-button
+    ></app-info>
+  </ng-container>
+  <div class="container" *ngIf="isEditCourse">
+    <app-course-form (createEvent)="createCourse($event)"></app-course-form>
+  </div>
 </div>
