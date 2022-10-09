@@ -68,7 +68,7 @@ export class AppComponent implements OnInit, OnDestroy {
     this.planetAndCharactersResults$ = combineLatest([
       this.mockDataService.getCharacters(),
       this.mockDataService.getPlanets(),
-    ]).pipe(map(([characters, planets]) => characters.concat(planets)), takeUntil(this.destroy$));
+    ]).pipe(map(([characters, planets]) => characters.concat(planets)));
 
     // YOUR CODE ENDS HERE
   }
@@ -87,8 +87,8 @@ export class AppComponent implements OnInit, OnDestroy {
     ]).
     pipe(takeUntil(this.destroy$)).
     subscribe(
-      ([isPlanetLoading, isCharactersLoading]) =>
-        (this.isLoading = this.isSomeValuesTrue([isPlanetLoading, isCharactersLoading]))
+      (loaderStates: boolean[]) =>
+        (this.isLoading = this.isSomeValuesTrue(loaderStates))
     )
     // YOUR CODE ENDS HERE
   }
