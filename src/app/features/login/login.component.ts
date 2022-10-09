@@ -1,7 +1,11 @@
 import { Component, EventEmitter, Output, ViewChild } from '@angular/core';
 
 import { APP_ROUTS, User } from 'src/app/app-model';
-import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
+import {
+  faEye,
+  faEyeSlash,
+  IconDefinition,
+} from '@fortawesome/free-solid-svg-icons';
 import { InitialUserData } from './login-model';
 
 @Component({
@@ -12,27 +16,31 @@ import { InitialUserData } from './login-model';
 export class LoginComponent {
   @ViewChild('formLogin') formLogin: any;
 
-  hidePassword = true;
-  eyeIcon = faEye;
-  eyeSlashIcon = faEyeSlash;
+  isPasswordHide: boolean = true;
+  passwordIcon: IconDefinition = faEye;
+  passwordTextType: string = '';
+
   userData: User = InitialUserData;
 
   @Output() navigateEvent = new EventEmitter<APP_ROUTS>();
   @Output() loginEvent = new EventEmitter<User>();
 
-  login() {
+  login(): void {
     if (this.formLogin.form.status === 'VALID') {
       this.loginEvent.emit(this.userData);
       this.navigateEvent.emit(APP_ROUTS.COURSES);
     }
   }
 
-  navigateToRegistration(event: Event) {
+  navigateToRegistration(event: Event): void {
     event.preventDefault();
     this.navigateEvent.emit(APP_ROUTS.REGISTRATION);
   }
 
-  togglePassword() {
-    this.hidePassword = !this.hidePassword;
+  onPasswordIconClick(): void {
+    this.isPasswordHide = !this.isPasswordHide;
+
+    this.passwordIcon = this.isPasswordHide ? faEye : faEyeSlash;
+    this.passwordTextType = this.isPasswordHide ? 'password' : 'text';
   }
 }

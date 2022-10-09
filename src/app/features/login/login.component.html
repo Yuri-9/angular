@@ -30,16 +30,12 @@
             class="input"
             required
             minlength="8"
-            [type]="hidePassword ? 'password' : 'text'"
+            [type]="passwordTextType"
             [(ngModel)]="userData.password"
             #password="ngModel"
             name="password" />
-          <span class="password-icon" (click)="togglePassword()">
-            <fa-icon
-              class=""
-              size="xs"
-              [icon]="hidePassword ? eyeIcon : eyeSlashIcon">
-            </fa-icon
+          <span class="password-icon" (click)="onPasswordIconClick()">
+            <fa-icon class="" size="xs" [icon]="passwordIcon"> </fa-icon
           ></span>
 
           <div

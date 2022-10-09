@@ -45,14 +45,10 @@
             class="input"
             required
             minlength="8"
-            [type]="hidePassword ? 'password' : 'text'"
+            [type]="passwordTextType"
             formControlName="password" />
-          <span class="password-icon" (click)="togglePassword()">
-            <fa-icon
-              class=""
-              size="xs"
-              [icon]="hidePassword ? eyeIcon : eyeSlashIcon">
-            </fa-icon
+          <span class="password-icon" (click)="onPasswordIconClick()">
+            <fa-icon class="" size="xs" [icon]="passwordIcon"> </fa-icon
           ></span>
 
           <div
