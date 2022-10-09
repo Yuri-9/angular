@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Output } from '@angular/core';
 import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
 import { authorFieldValidator } from 'src/app/common/validators/author-field-validator';
-import { Course } from '../courses/courses.model';
+import { Course } from '../courses/courses-model';
 
 const MINUTES_IN_DAY = 1440;
 

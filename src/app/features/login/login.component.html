@@ -10,7 +10,7 @@
             class="input"
             type="email"
             required
-            [(ngModel)]="model.email"
+            [(ngModel)]="userData.email"
             #email="ngModel"
             name="email"
             appEmailValidate />
@@ -19,7 +19,7 @@
             name="email"
             *ngIf="email.errors && (email.dirty || email.touched)">
             <p *ngIf="email.errors?.['required']">Email is required</p>
-            <p *ngIf="email.errors?.['email']" #emailHelperText>
+            <p *ngIf="email.errors?.['email']">
               {{ email.errors['email'].value }}
             </p>
           </div>
@@ -31,7 +31,7 @@
             required
             minlength="8"
             [type]="hidePassword ? 'password' : 'text'"
-            [(ngModel)]="model.password"
+            [(ngModel)]="userData.password"
             #password="ngModel"
             name="password" />
           <span class="password-icon" (click)="togglePassword()">

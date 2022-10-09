@@ -1,7 +1,8 @@
 import { Component, EventEmitter, Output, ViewChild } from '@angular/core';
 
-import { APP_ROUTS, User } from 'src/app/app.model';
+import { APP_ROUTS, User } from 'src/app/app-model';
 import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
+import { InitialUserData } from './login-model';
 
 @Component({
   selector: 'app-login',
@@ -14,19 +15,14 @@ export class LoginComponent {
   hidePassword = true;
   eyeIcon = faEye;
   eyeSlashIcon = faEyeSlash;
-  //for development
-  model: User = {
-    name: 'Yura',
-    email: 'Petya@gmai.sdf',
-    password: 'adsdfasf',
-  };
+  userData: User = InitialUserData;
 
   @Output() navigateEvent = new EventEmitter<APP_ROUTS>();
   @Output() loginEvent = new EventEmitter<User>();
 
   login() {
     if (this.formLogin.form.status === 'VALID') {
-      this.loginEvent.emit(this.model);
+      this.loginEvent.emit(this.userData);
       this.navigateEvent.emit(APP_ROUTS.COURSES);
     }
   }

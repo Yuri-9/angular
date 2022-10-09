@@ -1,5 +1,5 @@
 import { Component, ViewEncapsulation } from '@angular/core';
-import { APP_ROUTS, User } from './app.model';
+import { APP_ROUTS, User } from './app-model';
 
 @Component({
   selector: 'app-root',

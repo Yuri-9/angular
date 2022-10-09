@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { APP_ROUTS, User } from 'src/app/app.model';
+import { APP_ROUTS, User } from 'src/app/app-model';
 
-import { courses, Course } from './courses.model';
+import { courses, Course } from './courses-model';
 
 @Component({
   selector: 'app-courses',

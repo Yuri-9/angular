@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Output } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
-import { APP_ROUTS } from 'src/app/app.model';
+import { APP_ROUTS } from 'src/app/app-model';
 
 @Component({
   selector: 'app-registration',
