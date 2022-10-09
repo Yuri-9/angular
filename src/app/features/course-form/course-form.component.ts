@@ -1,9 +1,7 @@
 import { Component, EventEmitter, Output } from '@angular/core';
 import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
-import { APP_ROUTS } from 'src/app/app.model';
-import { latinLettersAndNumbersValidator } from 'src/app/common/validators/latin-letters-and-numbers-validator';
+import { authorFieldValidator } from 'src/app/common/validators/author-field-validator';
 import { Course } from '../courses/courses.model';
-import { DatePipe } from '@angular/common';
 
 const MINUTES_IN_DAY = 1440;
 
@@ -25,13 +23,13 @@ export class CourseFormComponent {
   });
 
   formAuthor: FormGroup = new FormGroup({
-    authorName: new FormControl('', [latinLettersAndNumbersValidator()]),
+    authorName: new FormControl('', [authorFieldValidator()]),
   });
 
   formAuthorList: FormGroup = new FormGroup({
     authorList: new FormArray([], [Validators.required]),
   });
-  constructor(public datepipe: DatePipe) {}
+  constructor() {}
 
   get title(): any {
     return this.form.get('title');
@@ -60,7 +58,7 @@ export class CourseFormComponent {
 
   onSubmit() {
     this.isSubmitted = true;
-    console.log('this.authorList.valid', this.authorList.valid);
+
     const { title, description, duration } = this.form.value;
     const { authorList } = this.formAuthorList.value;
     if (this.form.valid && this.authorList.valid) {
@@ -70,7 +68,7 @@ export class CourseFormComponent {
         description,
         duration,
         authors: authorList,
-        creationDate: this.datepipe.transform(new Date(), 'dd-MM-yyyy') || '',
+        creationDate: new Date().toISOString(),
       };
 
       this.createEvent.emit(newCourse);

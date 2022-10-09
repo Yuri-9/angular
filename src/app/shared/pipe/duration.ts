@@ -4,18 +4,23 @@ import { Pipe, PipeTransform } from '@angular/core';
   name: 'duration',
 })
 export class Duration implements PipeTransform {
-  transform(minutes: number) {
-    const minLimit = 0;
-    const maxLimit = 1440;
+  readonly minLimit = 0;
+  readonly maxLimit = 1440;
+  readonly numberTen = 10;
 
+  transform(minutes: number) {
     const correctNumber =
-      minutes >= minLimit && minutes <= maxLimit ? Math.floor(minutes) : 0;
+      minutes >= this.minLimit && minutes <= this.maxLimit
+        ? Math.floor(minutes)
+        : 0;
 
     const hours = Math.floor(correctNumber / 60);
     const minutesLeft = correctNumber % 60;
 
-    const hoursCorrect = `${hours < 10 ? '0' : ''}${hours}`;
-    const minutesCorrect = `${minutesLeft < 10 ? '0' : ''}${minutesLeft}`;
+    const hoursCorrect = `${hours < this.numberTen ? '0' : ''}${hours}`;
+    const minutesCorrect = `${
+      minutesLeft < this.numberTen ? '0' : ''
+    }${minutesLeft}`;
 
     return `${hoursCorrect}:${minutesCorrect}`;
   }

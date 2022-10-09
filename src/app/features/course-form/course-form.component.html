@@ -2,7 +2,7 @@
   <legend class="visually-hidden">Title and description</legend>
   <fieldset class="course-form-fieldset">
     <div class="title_container">
-      <label class="label" for="email">
+      <label class="label">
         Title
         <input class="input" type="text" required formControlName="title" />
         <div
@@ -13,7 +13,7 @@
       </label>
       <app-button>Create Course</app-button>
     </div>
-    <label class="label" for="description">
+    <label class="label">
       Description
       <textarea
         class="textarea"
@@ -36,9 +36,9 @@
   </fieldset>
   <div class="additional-fields">
     <div class="additional-fields_item">
-      <fieldset class="course-form-fieldset authors" [formGroup]="formAuthor">
+      <fieldset class="course-form-fieldset author" [formGroup]="formAuthor">
         <legend class="legend">Add authors</legend>
-        <label class="label" for="authorName">
+        <label class="label">
           Authors name
           <input class="input" type="text" formControlName="authorName" />
           <div
@@ -59,7 +59,7 @@
       </fieldset>
       <fieldset class="course-form-fieldset">
         <legend class="legend">Duration</legend>
-        <label class="label" for="duration">
+        <label class="label">
           Duration
           <input
             class="input"
@@ -83,7 +83,7 @@
       </fieldset>
     </div>
     <fieldset
-      class="course-form-fieldset additional-fields_item"
+      class="course-form-fieldset additional-fields_item authors"
       [formGroup]="formAuthorList">
       <legend class="legend">Authors list</legend>
       <ul formArrayName="authorList">
