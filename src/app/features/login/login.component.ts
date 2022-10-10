@@ -1,26 +1,20 @@
 import { Component, EventEmitter, Output, ViewChild } from '@angular/core';
 
-import { APP_ROUTS, User } from 'src/app/app-model';
-import {
-  faEye,
-  faEyeSlash,
-  IconDefinition,
-} from '@fortawesome/free-solid-svg-icons';
+import { ALERT_TEXT, APP_ROUTS, User } from 'src/app/app-model';
+
 import { InitialUserData } from './login-model';
+import { HelperInputPassword } from '../helper/HelperInputPassword';
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss'],
 })
-export class LoginComponent {
+export class LoginComponent extends HelperInputPassword {
   @ViewChild('formLogin') formLogin: any;
 
-  isPasswordHide: boolean = true;
-  passwordIcon: IconDefinition = faEye;
-  passwordTextType: string = '';
-
   userData: User = InitialUserData;
+  passwordAlertText: string = `Password ${ALERT_TEXT.MORE_THEN_8_CHARACTERS}`;
 
   @Output() navigateEvent = new EventEmitter<APP_ROUTS>();
   @Output() loginEvent = new EventEmitter<User>();
@@ -35,12 +29,5 @@ export class LoginComponent {
   navigateToRegistration(event: Event): void {
     event.preventDefault();
     this.navigateEvent.emit(APP_ROUTS.REGISTRATION);
-  }
-
-  onPasswordIconClick(): void {
-    this.isPasswordHide = !this.isPasswordHide;
-
-    this.passwordIcon = this.isPasswordHide ? faEye : faEyeSlash;
-    this.passwordTextType = this.isPasswordHide ? 'password' : 'text';
   }
 }

@@ -9,3 +9,8 @@ export interface User {
   email: string;
   password: string;
 }
+
+export enum ALERT_TEXT {
+  MORE_THEN_6_CHARACTERS = 'must be at least 6 characters',
+  MORE_THEN_8_CHARACTERS = 'must be at least 8 characters',
+}

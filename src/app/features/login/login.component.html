@@ -30,11 +30,11 @@
             class="input"
             required
             minlength="8"
-            [type]="passwordTextType"
+            [type]="inputType"
             [(ngModel)]="userData.password"
             #password="ngModel"
             name="password" />
-          <span class="password-icon" (click)="onPasswordIconClick()">
+          <span class="password-icon" (click)="handlePasswordIconClick()">
             <fa-icon class="" size="xs" [icon]="passwordIcon"> </fa-icon
           ></span>
 
@@ -44,7 +44,7 @@
             *ngIf="password.errors && (password.dirty || password.touched)">
             <p *ngIf="password.errors?.['required']">Password is required</p>
             <p *ngIf="password.errors?.['minlength']">
-              Password must be at least 8 characters
+              {{ passwordAlertText }}
             </p>
           </div>
         </label>

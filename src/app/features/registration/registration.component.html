@@ -17,7 +17,7 @@
             *ngIf="name.errors && (name.dirty || name.touched)">
             <p *ngIf="name.errors?.['required']">Name is required</p>
             <p *ngIf="name.errors?.['minlength']">
-              Name must be at least 6 characters
+              {{ nameAlertText }}
             </p>
           </div>
         </label>
@@ -45,9 +45,9 @@
             class="input"
             required
             minlength="8"
-            [type]="passwordTextType"
+            [type]="inputType"
             formControlName="password" />
-          <span class="password-icon" (click)="onPasswordIconClick()">
+          <span class="password-icon" (click)="handlePasswordIconClick()">
             <fa-icon class="" size="xs" [icon]="passwordIcon"> </fa-icon
           ></span>
 
@@ -57,7 +57,7 @@
             *ngIf="password.errors && (password.dirty || password.touched)">
             <p *ngIf="password.errors?.['required']">Password is required</p>
             <p *ngIf="password.errors?.['minlength']">
-              Password must be at least 8 characters
+              {{ passwordAlertText }}
             </p>
           </div>
         </label>

@@ -17,8 +17,4 @@ export class CourseComponent {
   };
 
   constructor() {}
-
-  joinAuthors(): string {
-    return this.course.authors.join(', ');
-  }
 }

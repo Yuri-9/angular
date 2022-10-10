@@ -1,21 +1,17 @@
 import { Component, EventEmitter, Output } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
-import {
-  faEye,
-  faEyeSlash,
-  IconDefinition,
-} from '@fortawesome/free-solid-svg-icons';
-import { APP_ROUTS } from 'src/app/app-model';
+
+import { ALERT_TEXT, APP_ROUTS } from 'src/app/app-model';
+import { HelperInputPassword } from '../helper/HelperInputPassword';
 
 @Component({
   selector: 'app-registration',
   templateUrl: './registration.component.html',
   styleUrls: ['./registration.component.scss'],
 })
-export class RegistrationComponent {
-  isPasswordHide: boolean = true;
-  passwordIcon: IconDefinition = faEye;
-  passwordTextType: string = '';
+export class RegistrationComponent extends HelperInputPassword {
+  nameAlertText: string = `Name ${ALERT_TEXT.MORE_THEN_6_CHARACTERS}`;
+  passwordAlertText: string = `Password ${ALERT_TEXT.MORE_THEN_8_CHARACTERS}`;
   form: FormGroup = new FormGroup({
     name: new FormControl(''),
     email: new FormControl(''),
@@ -49,12 +45,5 @@ export class RegistrationComponent {
   navigateToLogin(event: Event) {
     event.preventDefault();
     this.navigateEvent.emit(APP_ROUTS.LOGIN);
-  }
-
-  onPasswordIconClick(): void {
-    this.isPasswordHide = !this.isPasswordHide;
-
-    this.passwordIcon = this.isPasswordHide ? faEye : faEyeSlash;
-    this.passwordTextType = this.isPasswordHide ? 'password' : 'text';
   }
 }
