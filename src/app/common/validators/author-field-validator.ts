@@ -6,8 +6,6 @@ export function authorFieldValidator(): ValidatorFn {
   return (control: AbstractControl): ValidationErrors | null => {
     const error = !LATIN_LETTERS_AND_NUMBERS_REGEXP.test(control.value);
 
-    return error
-      ? { string: { value: `Allow only latin letters and numbers` } }
-      : null;
+    return error ? { string: { value: `Allow only latin letters and numbers` } } : null;
   };
 }

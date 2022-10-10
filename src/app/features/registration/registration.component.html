@@ -6,15 +6,8 @@
       <fieldset class="registration_fieldset">
         <label class="label">
           Name
-          <input
-            class="input"
-            type="text"
-            required
-            formControlName="name"
-            minlength="6" />
-          <div
-            class="alert"
-            *ngIf="name.errors && (name.dirty || name.touched)">
+          <input class="input" type="text" required formControlName="name" minlength="6" />
+          <div class="alert" *ngIf="name.errors && (name.dirty || name.touched)">
             <p *ngIf="name.errors?.['required']">Name is required</p>
             <p *ngIf="name.errors?.['minlength']">
               {{ nameAlertText }}
@@ -23,16 +16,8 @@
         </label>
         <label class="label">
           Email
-          <input
-            class="input"
-            type="email"
-            required
-            formControlName="email"
-            appEmailValidate />
-          <div
-            class="alert"
-            name="email"
-            *ngIf="email.errors && (email.dirty || email.touched)">
+          <input class="input" type="email" required formControlName="email" appEmailValidate />
+          <div class="alert" name="email" *ngIf="email.errors && (email.dirty || email.touched)">
             <p *ngIf="email.errors?.['required']">Email is required</p>
             <p *ngIf="email.errors?.['email']">
               {{ email.errors['email'].value }}
@@ -41,20 +26,12 @@
         </label>
         <label class="label">
           Password
-          <input
-            class="input"
-            required
-            minlength="8"
-            [type]="inputType"
-            formControlName="password" />
+          <input class="input" required minlength="8" [type]="inputType" formControlName="password" />
           <span class="password-icon" (click)="handlePasswordIconClick()">
             <fa-icon class="" size="xs" [icon]="passwordIcon"> </fa-icon
           ></span>
 
-          <div
-            class="alert"
-            name="password"
-            *ngIf="password.errors && (password.dirty || password.touched)">
+          <div class="alert" name="password" *ngIf="password.errors && (password.dirty || password.touched)">
             <p *ngIf="password.errors?.['required']">Password is required</p>
             <p *ngIf="password.errors?.['minlength']">
               {{ passwordAlertText }}

@@ -16,10 +16,7 @@ export class CourseFormComponent {
   form: FormGroup = new FormGroup({
     title: new FormControl(''),
     description: new FormControl(''),
-    duration: new FormControl('', [
-      Validators.min(0),
-      Validators.max(MINUTES_IN_DAY),
-    ]),
+    duration: new FormControl('', [Validators.min(0), Validators.max(MINUTES_IN_DAY)]),
   });
 
   formAuthor: FormGroup = new FormGroup({

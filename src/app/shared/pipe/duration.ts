@@ -9,18 +9,13 @@ export class Duration implements PipeTransform {
   readonly numberTen = 10;
 
   transform(minutes: number) {
-    const correctNumber =
-      minutes >= this.minLimit && minutes <= this.maxLimit
-        ? Math.floor(minutes)
-        : 0;
+    const correctNumber = minutes >= this.minLimit && minutes <= this.maxLimit ? Math.floor(minutes) : 0;
 
     const hours = Math.floor(correctNumber / 60);
     const minutesLeft = correctNumber % 60;
 
     const hoursCorrect = `${hours < this.numberTen ? '0' : ''}${hours}`;
-    const minutesCorrect = `${
-      minutesLeft < this.numberTen ? '0' : ''
-    }${minutesLeft}`;
+    const minutesCorrect = `${minutesLeft < this.numberTen ? '0' : ''}${minutesLeft}`;
 
     return `${hoursCorrect}:${minutesCorrect}`;
   }

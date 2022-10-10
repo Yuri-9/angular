@@ -11,8 +11,7 @@ import { courses, Course } from './courses-model';
 export class CoursesComponent {
   infoOption = {
     title: 'Your list is empty',
-    message:
-      "Please use the <b>'Add new course'</b> button to add your first course",
+    message: "Please use the <b>'Add new course'</b> button to add your first course",
     buttonText: 'Add new course',
   };
   courses: Course[] = courses;

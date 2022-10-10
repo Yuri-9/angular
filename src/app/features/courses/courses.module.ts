@@ -7,12 +7,7 @@ import { CourseListComponent } from '../course-list/course-list.component';
 import { CourseFormComponent } from '../course-form/course-form.component';
 
 @NgModule({
-  declarations: [
-    CoursesComponent,
-    CourseComponent,
-    CourseListComponent,
-    CourseFormComponent,
-  ],
+  declarations: [CoursesComponent, CourseComponent, CourseListComponent, CourseFormComponent],
   imports: [CommonModule, SharedModule],
   bootstrap: [CoursesComponent],
   exports: [CoursesComponent],

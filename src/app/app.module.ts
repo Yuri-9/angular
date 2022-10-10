@@ -10,13 +10,7 @@ import { RegistrationModule } from './features/registration/registration.module'
 
 @NgModule({
   declarations: [AppComponent],
-  imports: [
-    BrowserModule,
-    AppRoutingModule,
-    CoursesModule,
-    LoginModule,
-    RegistrationModule,
-  ],
+  imports: [BrowserModule, AppRoutingModule, CoursesModule, LoginModule, RegistrationModule],
   providers: [],
   bootstrap: [AppComponent],
 })
