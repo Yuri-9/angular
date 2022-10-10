@@ -1,0 +1,67 @@
+@import 'colors';
+
+.label {
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  gap: 3px;
+  font-weight: bold;
+  position: relative;
+}
+
+.input {
+  font-size: 16px;
+  line-height: 26px;
+  margin-bottom: 16px;
+  border: 1px solid $orange;
+  &:focus {
+    outline-color: $orange;
+  }
+
+  &.ng-invalid {
+    border: 1px solid $danger;
+    &:focus {
+      outline-color: $danger;
+    }
+  }
+  &.ng-invalid.ng-untouched {
+    border: 1px solid $danger;
+    &:focus {
+      outline-color: $danger;
+    }
+    &.ng-pristine {
+      border: 1px solid $orange;
+      &:focus {
+        outline-color: $orange;
+      }
+    }
+  }
+}
+
+.alert {
+  position: absolute;
+  bottom: 0;
+  color: $danger;
+  font-weight: 300;
+  font-size: 12px;
+}
+
+.password-icon {
+  position: absolute;
+  right: 5px;
+  top: 50%;
+  transform: translateY(-30%);
+  cursor: pointer;
+}
+
+.visually-hidden {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  padding: 0 !important;
+  margin: -1px !important;
+  overflow: hidden !important;
+  clip: rect(0, 0, 0, 0) !important;
+  white-space: nowrap !important;
+  border: 0 !important;
+}

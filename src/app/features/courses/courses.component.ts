@@ -1,6 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { APP_ROUTS, User } from 'src/app/app-model';
 
-import { courses, Course, User } from './courses.model';
+import { courses, Course } from './courses-model';
 
 @Component({
   selector: 'app-courses',
@@ -16,7 +17,11 @@ export class CoursesComponent {
   };
   courses: Course[] = courses;
   buttonText = 'Logout';
-  user: User = { name: 'Vasia' };
+  filterString = '';
+  isEditCourse = false;
+
+  @Input() user: User = { name: '', email: '', password: '' };
+  @Output() navigateEvent = new EventEmitter();
 
   showCourse(id: string) {
     console.log('show course', id);
@@ -30,11 +35,25 @@ export class CoursesComponent {
     this.courses = this.courses.filter(course => course.id !== id);
   }
 
-  addCourse() {
-    console.log('add course');
+  addCourseClickButton() {
+    this.isEditCourse = true;
   }
 
   handleLogout(): void {
-    console.log('logout');
+    this.navigateEvent.emit(APP_ROUTS.LOGIN);
+  }
+
+  searchCourse(nameCourse: string) {
+    this.filterString = nameCourse;
+  }
+
+  createCourse(course: Course) {
+    this.courses.push(course);
+    this.isEditCourse = false;
+  }
+
+  get filteredCourses() {
+    const regExpFilterString = new RegExp(this.filterString, 'i');
+    return this.courses.filter(({ title }) => title.match(regExpFilterString));
   }
 }

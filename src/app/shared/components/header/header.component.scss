@@ -1,8 +1,11 @@
+@import 'colors';
+
 .header {
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 0 20px;
+  border: 2px solid $light_red;
 }
 
 .login {

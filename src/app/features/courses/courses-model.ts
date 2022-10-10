@@ -7,10 +7,6 @@ export interface Course {
   authors: string[];
 }
 
-export interface User {
-  name: string;
-}
-
 export const courses = [
   {
     id: 'de5aaa59-90f5-4dbc-b8a9-aaf205c551ba',

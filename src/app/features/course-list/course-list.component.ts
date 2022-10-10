@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { Course } from '../courses/courses.model';
+import { Course } from '../courses/courses-model';
 
 import { faPencil, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { IModal } from 'src/app/shared/components';

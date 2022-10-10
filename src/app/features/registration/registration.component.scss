@@ -1,0 +1,29 @@
+@import '../../styles/input-form.scss';
+
+.registration_container {
+  margin-top: 20px;
+  border: 2px solid $light_blue;
+  padding: 20px;
+}
+
+.title {
+  font-size: 22px;
+  font-weight: bold;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.registration_fieldset {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  align-items: center;
+  max-width: 300px;
+  margin: 0 auto;
+  border: none;
+  margin-bottom: 20px;
+}
+
+.question {
+  text-align: center;
+}
