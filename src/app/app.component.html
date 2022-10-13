@@ -1,10 +1,9 @@
 <div>
-  <app-courses *ngIf="selectedRoute === APP_ROUTS.COURSES" (navigateEvent)="handleRoute($event)" [user]="user"> </app-courses>
-  <app-login *ngIf="selectedRoute === APP_ROUTS.LOGIN" (navigateEvent)="handleRoute($event)" (loginEvent)="handleLogin($event)" #login>
-  </app-login>
-  <app-registration
-    *ngIf="selectedRoute === APP_ROUTS.REGISTRATION"
-    (navigateEvent)="handleRoute($event)"
-    (registrationEvent)="handleRegistration($event)">
-  </app-registration>
+  <button routerLink="login">login</button>
+  <button routerLink="registration">registration</button>
+  <button routerLink="courses">courses</button>
+  <button routerLink="courses/:23423423">courses id</button>
+  <button routerLink="courses/add">courses add</button>
+  <button routerLink="courses/edit/:id">edit/:id</button>
+  <router-outlet></router-outlet>
 </div>

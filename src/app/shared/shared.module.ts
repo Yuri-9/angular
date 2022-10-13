@@ -9,6 +9,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CreationDate } from './pipe/creation-date';
 import { Duration } from './pipe/duration';
 import { StringJoiner } from './pipe/string-joiner';
+import { PageNotFoundComponent } from './components/page-not-found/page-not-found.component';
 
 @NgModule({
   declarations: [
@@ -21,6 +22,7 @@ import { StringJoiner } from './pipe/string-joiner';
     Duration,
     CreationDate,
     StringJoiner,
+    PageNotFoundComponent,
   ],
   imports: [CommonModule, FontAwesomeModule, FormsModule, ReactiveFormsModule],
   providers: [DatePipe],

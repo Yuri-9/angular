@@ -4,6 +4,8 @@ import { ALERT_TEXT, APP_ROUTS, User } from 'src/app/app-model';
 
 import { InitialUserData } from './login-model';
 import { HelperInputPassword } from '../helper/HelperInputPassword';
+import { Router } from '@angular/router';
+import { AuthService } from 'src/app/auth/services/auth.service';
 
 @Component({
   selector: 'app-login',
@@ -16,18 +18,21 @@ export class LoginComponent extends HelperInputPassword {
   userData: User = InitialUserData;
   passwordAlertText: string = `Password ${ALERT_TEXT.MORE_THEN_8_CHARACTERS}`;
 
+  constructor(private _authService: AuthService, private _router: Router) {
+    super();
+  }
+
   @Output() navigateEvent = new EventEmitter<APP_ROUTS>();
   @Output() loginEvent = new EventEmitter<User>();
 
   login(): void {
     if (this.formLogin.form.status === 'VALID') {
-      this.loginEvent.emit(this.userData);
-      this.navigateEvent.emit(APP_ROUTS.COURSES);
+      this._authService.login(this.userData);
     }
   }
 
   navigateToRegistration(event: Event): void {
     event.preventDefault();
-    this.navigateEvent.emit(APP_ROUTS.REGISTRATION);
+    this._router.navigateByUrl('/registration');
   }
 }

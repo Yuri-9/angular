@@ -7,10 +7,11 @@ import { AppComponent } from './app.component';
 import { CoursesModule } from './features/courses/courses.module';
 import { LoginModule } from './features/login/login.module';
 import { RegistrationModule } from './features/registration/registration.module';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [AppComponent],
-  imports: [BrowserModule, AppRoutingModule, CoursesModule, LoginModule, RegistrationModule],
+  imports: [BrowserModule, AppRoutingModule, CoursesModule, LoginModule, RegistrationModule, HttpClientModule],
   providers: [],
   bootstrap: [AppComponent],
 })

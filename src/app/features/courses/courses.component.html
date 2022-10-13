@@ -14,10 +14,8 @@
     </app-course-list>
 
     <app-info [option]="infoOption" [isShowMessage]="!courses.length">
-      <app-button (clickButton)="addCourseClickButton()" text="Add course"> </app-button
+      <app-button routerLink="add" text="Add course"> </app-button
     ></app-info>
   </ng-container>
-  <div class="container" *ngIf="isEditCourse">
-    <app-course-form (createEvent)="createCourse($event)"></app-course-form>
-  </div>
+  <router-outlet></router-outlet>
 </div>

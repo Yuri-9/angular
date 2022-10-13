@@ -8,6 +8,7 @@ export interface User {
   name: string;
   email: string;
   password: string;
+  accessToken?: string;
 }
 
 export enum ALERT_TEXT {

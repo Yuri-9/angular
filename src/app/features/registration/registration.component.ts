@@ -1,7 +1,9 @@
 import { Component, EventEmitter, Output } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
+import { Router } from '@angular/router';
 
 import { ALERT_TEXT, APP_ROUTS } from 'src/app/app-model';
+import { AuthService } from 'src/app/auth/services/auth.service';
 import { HelperInputPassword } from '../helper/HelperInputPassword';
 
 @Component({
@@ -17,6 +19,9 @@ export class RegistrationComponent extends HelperInputPassword {
     email: new FormControl(''),
     password: new FormControl(''),
   });
+  constructor(private authService: AuthService) {
+    super();
+  }
 
   @Output() navigateEvent = new EventEmitter();
   @Output() registrationEvent = new EventEmitter();
@@ -37,13 +42,17 @@ export class RegistrationComponent extends HelperInputPassword {
     if (!this.form.valid) {
       this.form.markAllAsTouched();
     } else {
-      this.navigateEvent.emit(APP_ROUTS.LOGIN);
+      const { name, email, password } = this.form.value;
+      // this.authService.register();
+      console.log(name, email, password);
+
+      // this.navigateEvent.emit(APP_ROUTS.LOGIN);
       this.registrationEvent.emit(this.form.value);
     }
   }
 
-  navigateToLogin(event: Event) {
-    event.preventDefault();
-    this.navigateEvent.emit(APP_ROUTS.LOGIN);
-  }
+  // navigateToLogin(event: Event) {
+  //   event.preventDefault();
+  //   this._router.navigateByUrl('/login');
+  // }
 }
