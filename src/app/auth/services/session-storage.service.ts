@@ -21,6 +21,6 @@ export class SessionStorageService {
   }
 
   deleteToken(): void {
-    localStorage.removeItem('token');
+    sessionStorage.removeItem('token');
   }
 }

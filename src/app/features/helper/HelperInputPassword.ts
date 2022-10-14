@@ -8,7 +8,7 @@ enum INPUT_TYPE {
 export class HelperInputPassword {
   isPasswordHide: boolean = true;
   passwordIcon: IconDefinition = faEye;
-  inputType: string = '';
+  inputType: string = 'password';
 
   handlePasswordIconClick(): void {
     this.isPasswordHide = !this.isPasswordHide;

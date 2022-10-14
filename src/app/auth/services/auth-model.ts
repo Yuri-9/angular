@@ -4,3 +4,7 @@ interface User {
   password: string;
   accessToken?: string;
 }
+
+export interface PostResponse {
+  successful: boolean;
+}

@@ -1,12 +1,13 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { AuthorizedGuard } from './auth/guards/authorized.guard';
-import { CourseComponent } from './features/course/course.component';
+import { CoursesComponent } from './features/courses/courses.component';
 import { PageNotFoundComponent } from './shared/components/page-not-found/page-not-found.component';
 
 const routes: Routes = [
   {
     path: 'courses',
+    component: CoursesComponent,
     canActivate: [AuthorizedGuard],
     loadChildren: () => import('./features/courses/courses.module').then(m => m.CoursesModule),
   },

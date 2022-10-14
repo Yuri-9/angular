@@ -12,6 +12,6 @@ export interface User {
 }
 
 export enum ALERT_TEXT {
-  MORE_THEN_6_CHARACTERS = 'must be at least 6 characters',
+  MORE_THEN_3_CHARACTERS = 'must be at least 3 characters',
   MORE_THEN_8_CHARACTERS = 'must be at least 8 characters',
 }

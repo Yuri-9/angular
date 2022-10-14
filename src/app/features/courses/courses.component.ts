@@ -1,5 +1,7 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Router } from '@angular/router';
 import { APP_ROUTS, User } from 'src/app/app-model';
+import { AuthService } from 'src/app/auth/services/auth.service';
 
 import { courses, Course } from './courses-model';
 
@@ -18,6 +20,8 @@ export class CoursesComponent {
   buttonText = 'Logout';
   filterString = '';
   isEditCourse = false;
+
+  constructor(private _authService: AuthService, private _router: Router) {}
 
   @Input() user: User = { name: '', email: '', password: '' };
   @Output() navigateEvent = new EventEmitter();
@@ -39,7 +43,8 @@ export class CoursesComponent {
   }
 
   handleLogout(): void {
-    this.navigateEvent.emit(APP_ROUTS.LOGIN);
+    this._authService.logout();
+    this._router.navigateByUrl('login');
   }
 
   searchCourse(nameCourse: string) {
