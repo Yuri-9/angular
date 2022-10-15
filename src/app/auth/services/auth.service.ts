@@ -22,6 +22,7 @@ export class AuthService {
     name: '',
     email: '',
     password: '',
+    accessToken: '',
   };
 
   constructor(private _http: HttpClient, private _storage: SessionStorageService, private _router: Router) {}
@@ -47,6 +48,7 @@ export class AuthService {
           const token = response.result;
           this.isAuthorized$$.next(true);
           this._storage.setToken(token);
+          this.user.accessToken = token;
         }
       });
   }
