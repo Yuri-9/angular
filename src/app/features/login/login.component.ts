@@ -2,7 +2,6 @@ import { Component, EventEmitter, OnChanges, OnInit, Output, SimpleChanges, View
 
 import { ALERT_TEXT, APP_ROUTS, User } from 'src/app/app-model';
 
-import { InitialUserData } from './login-model';
 import { HelperInputPassword } from '../helper/HelperInputPassword';
 import { Router } from '@angular/router';
 import { AuthService } from 'src/app/auth/services/auth.service';
@@ -16,7 +15,7 @@ import { IModal } from 'src/app/shared/components';
 export class LoginComponent extends HelperInputPassword implements OnInit {
   @ViewChild('formLogin') formLogin: any;
 
-  userData: User = InitialUserData;
+  userData: User = {};
   passwordAlertText: string = `Password ${ALERT_TEXT.MORE_THEN_8_CHARACTERS}`;
   optionModalInfo: IModal = {
     title: 'Info',
@@ -46,9 +45,7 @@ export class LoginComponent extends HelperInputPassword implements OnInit {
   }
 
   confirmButtonModal(): void {
-    if (this._authService.isRegistered) {
-      this._router.navigateByUrl(this.redirectUrl);
-    }
+    this._router.navigateByUrl(this.redirectUrl);
     this.closeModal();
   }
 

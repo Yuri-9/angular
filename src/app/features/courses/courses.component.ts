@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { Router } from '@angular/router';
-import { APP_ROUTS, User } from 'src/app/app-model';
+import { User } from 'src/app/app-model';
 import { AuthService } from 'src/app/auth/services/auth.service';
 
 import { courses, Course } from './courses-model';

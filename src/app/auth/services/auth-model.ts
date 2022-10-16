@@ -8,3 +8,9 @@ interface User {
 export interface PostResponse {
   successful: boolean;
 }
+
+export const InitialUserAdminData: User = {
+  name: '',
+  email: 'admin@email.com',
+  password: 'admin123',
+};

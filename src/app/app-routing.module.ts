@@ -7,7 +7,6 @@ import { PageNotFoundComponent } from './shared/components/page-not-found/page-n
 const routes: Routes = [
   {
     path: 'courses',
-    component: CoursesComponent,
     canActivate: [AuthorizedGuard],
     loadChildren: () => import('./features/courses/courses.module').then(m => m.CoursesModule),
   },
