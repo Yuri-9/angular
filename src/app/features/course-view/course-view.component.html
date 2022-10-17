@@ -1,0 +1,8 @@
+<div>
+  <app-course [course]="course">
+    <ng-template [ngIf]="canEdit">
+      <app-button [icon]="iconButtonEdit" (clickButton)="editCourse(course)" title="Edit course"></app-button>
+    </ng-template>
+  </app-course>
+  <app-button (clickButton)="navigateToCourses()">Back to courses</app-button>
+</div>

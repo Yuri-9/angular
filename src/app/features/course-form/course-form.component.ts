@@ -1,10 +1,12 @@
-import { Component, EventEmitter, OnDestroy, OnInit, Output } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
-import { ReplaySubject, switchMap, take, takeUntil } from 'rxjs';
+import { Router } from '@angular/router';
+import { ReplaySubject, switchMap } from 'rxjs';
 import { Author } from 'src/app/app-model';
 
 import { authorFieldValidator } from 'src/app/common/validators/author-field-validator';
 import { AuthorsStoreService } from 'src/app/services/authors-store.service';
+import { CoursesStoreService } from 'src/app/services/courses-store.service';
 
 import { Course } from '../courses/courses-model';
 
@@ -19,6 +21,8 @@ export class CourseFormComponent implements OnInit, OnDestroy {
   isSubmitted = false;
   private readonly destroy$ = new ReplaySubject(1);
   authors: Author[] = [];
+  initialCourse: Course | null = null;
+  buttonSaveText = '';
 
   form: FormGroup = new FormGroup({
     title: new FormControl(''),
@@ -40,7 +44,23 @@ export class CourseFormComponent implements OnInit, OnDestroy {
       [Validators.required]
     ),
   });
-  constructor(private _authorsStoreService: AuthorsStoreService) {}
+
+  constructor(
+    private _authorsStoreService: AuthorsStoreService,
+    private _coursesStoreService: CoursesStoreService,
+    private _router: Router
+  ) {
+    const course = this._router.getCurrentNavigation()?.extras.state as Course;
+    if (course) {
+      this.initialCourse = course;
+    }
+  }
+
+  ngOnInit(): void {
+    this.initAuthorsLoad();
+    this.initForm();
+    this.initFormOption();
+  }
 
   get title(): any {
     return this.form.get('title');
@@ -62,24 +82,32 @@ export class CourseFormComponent implements OnInit, OnDestroy {
     return this.formAuthorList.controls['authorList'] as FormArray;
   }
 
-  @Output() createEvent = new EventEmitter<Course>();
+  get isEdit(): boolean {
+    return !!this.initialCourse;
+  }
 
-  onSubmit() {
+  saveCourse() {
     this.isSubmitted = true;
 
     const { title, description, duration } = this.form.value;
     const { authorList } = this.formAuthorList.value;
+    const authorsIdList = (authorList as Author[]).map(({ id }) => id || '');
     if (this.form.valid && this.authorsList.valid) {
       const newCourse: Course = {
-        id: 'sdf',
+        id: this.initialCourse?.id || '',
         title,
         description,
         duration,
-        authors: authorList,
-        creationDate: new Date().toISOString(),
+        authors: authorsIdList,
       };
 
-      this.createEvent.emit(newCourse);
+      if (this.isEdit) {
+        this._coursesStoreService.editCourse(newCourse).subscribe();
+      } else {
+        this._coursesStoreService.createCourse(newCourse).subscribe();
+      }
+
+      this._router.navigateByUrl('/courses');
     } else {
       this.form.markAllAsTouched();
     }
@@ -107,7 +135,19 @@ export class CourseFormComponent implements OnInit, OnDestroy {
       .subscribe();
   }
 
-  ngOnInit(): void {
+  initForm() {
+    if (this.initialCourse) {
+      this.title.setValue(this.initialCourse.title);
+      this.description.setValue(this.initialCourse.description);
+      this.duration.setValue(this.initialCourse.duration);
+    }
+  }
+
+  initFormOption() {
+    this.buttonSaveText = this.isEdit ? 'Save course' : 'Create course';
+  }
+
+  initAuthorsLoad(): void {
     this._authorsStoreService.getAll().subscribe();
 
     this._authorsStoreService.authors$.subscribe(authors => {
