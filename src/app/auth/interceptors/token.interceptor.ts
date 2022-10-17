@@ -16,7 +16,6 @@ export class TokenInterceptor implements HttpInterceptor {
     return next.handle(request).pipe(
       catchError((error): Observable<HttpEvent<any>> => {
         if (error.status === 401) {
-          console.log('redirect to login');
           this._router.navigateByUrl('login');
         }
         return throwError(error);

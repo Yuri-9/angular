@@ -6,6 +6,7 @@ import { IModal } from 'src/app/shared/components';
 import { Router } from '@angular/router';
 import { CoursesStoreService } from 'src/app/services/courses-store.service';
 import { concatMap } from 'rxjs';
+import { UserStoreService } from 'src/app/user/services/user-store.service';
 
 @Component({
   selector: 'app-course-list',
@@ -15,7 +16,7 @@ import { concatMap } from 'rxjs';
 export class CourseListComponent implements OnInit {
   iconButtonEdit = faPencil;
   iconButtonDelete = faTrash;
-  canEdit = true;
+  isAdmin = true;
   courses: Course[] = [];
   private currentCourse: Course | null = null;
   isOpenModal = false;
@@ -32,7 +33,7 @@ export class CourseListComponent implements OnInit {
     buttonText: 'Add new course',
   };
 
-  constructor(private _router: Router, private _courseStoreService: CoursesStoreService) {}
+  constructor(private _router: Router, private _courseStoreService: CoursesStoreService, private _userStoreService: UserStoreService) {}
 
   showCourse(course: Course): void {
     console.log('show ', course);
@@ -73,5 +74,7 @@ export class CourseListComponent implements OnInit {
     this._courseStoreService.courses$.subscribe(courses => {
       this.courses = courses;
     });
+
+    this._userStoreService.isAdmin$.subscribe(isAdmin => (this.isAdmin = !!isAdmin));
   }
 }

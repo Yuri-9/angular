@@ -5,6 +5,7 @@ import { SessionStorageService } from './session-storage.service';
 import { User } from 'src/app/app-model';
 import { InitialUserAdminData, PostResponse } from './auth-model';
 import { environment } from 'src/environments/environment';
+import { UserStoreService } from 'src/app/user/services/user-store.service';
 
 @Injectable({
   providedIn: 'root',
@@ -20,7 +21,7 @@ export class AuthService {
   // InitialUserAdminData login as admin. It allows to avoid 403 error
   user: User = InitialUserAdminData;
 
-  constructor(private _http: HttpClient, private _storage: SessionStorageService) {}
+  constructor(private _http: HttpClient, private _storage: SessionStorageService, private _userStoreService: UserStoreService) {}
 
   getUser() {
     return this.user;
@@ -42,6 +43,7 @@ export class AuthService {
           this.isAuthorized$$.next(true);
           this._storage.setToken(token);
           this.user.accessToken = token;
+          this._userStoreService.getUser().subscribe();
         }
       });
   }

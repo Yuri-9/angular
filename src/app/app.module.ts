@@ -9,10 +9,11 @@ import { LoginModule } from './features/login/login.module';
 import { RegistrationModule } from './features/registration/registration.module';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { TokenInterceptor } from './auth/interceptors/token.interceptor';
+import { AuthModule } from './auth/auth.module';
 
 @NgModule({
   declarations: [AppComponent],
-  imports: [BrowserModule, AppRoutingModule, CoursesModule, LoginModule, RegistrationModule, HttpClientModule],
+  imports: [BrowserModule, AppRoutingModule, CoursesModule, LoginModule, RegistrationModule, HttpClientModule, AuthModule],
   providers: [
     {
       provide: HTTP_INTERCEPTORS,
