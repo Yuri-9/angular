@@ -24,22 +24,29 @@ export class CoursesStoreService {
   }
 
   createCourse(course: Course): Observable<any> {
+    this.isLoading$.next(true);
     return this._coursesService.createCourse(course);
   }
 
   editCourse(course: Course): Observable<any> {
+    this.isLoading$.next(true);
     return this._coursesService.editCourse(course);
   }
 
   filterCourse(queries: SearchQueriesCourse): Observable<any> {
-    return this._coursesService.filterCourse(queries).pipe(
-      tap(courses => {
-        this.courses$$.next(courses);
-      })
-    );
+    this.isLoading$.next(true);
+    return this._coursesService
+      .filterCourse(queries)
+      .pipe(finalize(() => this.isLoading$.next(false)))
+      .pipe(
+        tap(courses => {
+          this.courses$$.next(courses);
+        })
+      );
   }
 
   deleteCourse(course: Course): Observable<any> {
+    this.isLoading$.next(true);
     return this._coursesService.deleteCourse(course);
   }
 }

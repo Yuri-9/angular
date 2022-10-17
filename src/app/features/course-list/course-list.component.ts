@@ -5,7 +5,7 @@ import { faPencil, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { IModal } from 'src/app/shared/components';
 import { Router } from '@angular/router';
 import { CoursesStoreService } from 'src/app/services/courses-store.service';
-import { switchMap } from 'rxjs';
+import { concatMap } from 'rxjs';
 
 @Component({
   selector: 'app-course-list',
@@ -57,7 +57,7 @@ export class CourseListComponent implements OnInit {
     this.currentCourse &&
       this._courseStoreService
         .deleteCourse(this.currentCourse)
-        .pipe(switchMap(() => this._courseStoreService.getAll()))
+        .pipe(concatMap(() => this._courseStoreService.getAll()))
         .subscribe();
 
     this.closeModal();

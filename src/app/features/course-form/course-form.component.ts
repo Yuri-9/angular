@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { ReplaySubject, switchMap } from 'rxjs';
+import { concatMap, ReplaySubject } from 'rxjs';
 import { Author } from 'src/app/app-model';
 
 import { authorFieldValidator } from 'src/app/common/validators/author-field-validator';
@@ -119,7 +119,7 @@ export class CourseFormComponent implements OnInit, OnDestroy {
     if (this.authorName.value && this.authorName.valid) {
       this._authorsStoreService
         .addAuthor({ name: this.authorName.value })
-        .pipe(switchMap(() => this._authorsStoreService.getAll()))
+        .pipe(concatMap(() => this._authorsStoreService.getAll()))
         .subscribe();
 
       this.formAuthor.controls['authorName'].setValue('');
@@ -131,7 +131,7 @@ export class CourseFormComponent implements OnInit, OnDestroy {
 
     this._authorsStoreService
       .deleteAuthor(author.value)
-      .pipe(switchMap(() => this._authorsStoreService.getAll()))
+      .pipe(concatMap(() => this._authorsStoreService.getAll()))
       .subscribe();
   }
 
