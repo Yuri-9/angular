@@ -17,7 +17,7 @@ const routes: Routes = [
     path: 'registration',
     loadChildren: () => import('./features/registration/registration.module').then(m => m.RegistrationModule),
   },
-  { path: '', redirectTo: '/login', pathMatch: 'full' },
+  { path: '', redirectTo: '/courses', pathMatch: 'full' },
   { path: '**', component: PageNotFoundComponent },
 ];
 
