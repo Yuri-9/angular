@@ -36,7 +36,6 @@ export class CourseListComponent implements OnInit {
   constructor(private _router: Router, private _courseStoreService: CoursesStoreService, private _userStoreService: UserStoreService) {}
 
   showCourse(course: Course): void {
-    console.log('show ', course);
     this._router.navigateByUrl(`/courses/${course.id}`, { state: course });
   }
 

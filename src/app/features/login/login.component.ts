@@ -1,4 +1,4 @@
-import { Component, EventEmitter, OnChanges, OnInit, Output, SimpleChanges, ViewChild } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output, ViewChild } from '@angular/core';
 
 import { ALERT_TEXT, APP_ROUTS, User } from 'src/app/app-model';
 
@@ -19,7 +19,7 @@ export class LoginComponent extends HelperInputPassword implements OnInit {
   passwordAlertText: string = `Password ${ALERT_TEXT.MORE_THEN_8_CHARACTERS}`;
   optionModalInfo: IModal = {
     title: 'Info',
-    message: '',
+    message: 'Successful!!',
     okButtonText: 'Ok',
   };
   isOpenModal = false;

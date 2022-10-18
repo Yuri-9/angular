@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { User } from 'src/app/app-model';
 import { AuthService } from 'src/app/auth/services/auth.service';
 import { CoursesStoreService } from 'src/app/services/courses-store.service';
+import { UserStoreService } from 'src/app/user/services/user-store.service';
 
 @Component({
   selector: 'app-courses',
@@ -10,12 +10,15 @@ import { CoursesStoreService } from 'src/app/services/courses-store.service';
   styleUrls: ['./courses.component.scss'],
 })
 export class CoursesComponent implements OnInit {
-  user: User;
+  name: string = '';
   isLoading: boolean = false;
 
-  constructor(private _authService: AuthService, private _router: Router, private _coursesStoreService: CoursesStoreService) {
-    this.user = this._authService.getUser();
-  }
+  constructor(
+    private _authService: AuthService,
+    private _router: Router,
+    private _coursesStoreService: CoursesStoreService,
+    private _userStoreService: UserStoreService
+  ) {}
 
   handleLogout(): void {
     this._authService.logout();
@@ -26,5 +29,7 @@ export class CoursesComponent implements OnInit {
     this._coursesStoreService.isLoading$.subscribe(isLoading => {
       Promise.resolve().then(() => (this.isLoading = isLoading));
     });
+
+    this._userStoreService.name$.subscribe(name => (this.name = name || ''));
   }
 }
