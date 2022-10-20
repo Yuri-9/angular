@@ -1,12 +1,13 @@
 import { Component, EventEmitter, OnDestroy, Output } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
-import { ReplaySubject, takeUntil } from 'rxjs';
+import { finalize, ReplaySubject, takeUntil } from 'rxjs';
 
 import { ALERT_TEXT } from 'src/app/app-model';
 import { AuthService } from 'src/app/auth/services/auth.service';
 import { IModal } from 'src/app/shared/components';
 import { HelperInputPassword } from '../helper/HelperInputPassword';
+import { InitialUser } from './registration-model';
 
 @Component({
   selector: 'app-registration',
@@ -17,10 +18,11 @@ export class RegistrationComponent extends HelperInputPassword implements OnDest
   private readonly destroy$ = new ReplaySubject(1);
   nameAlertText: string = `Name ${ALERT_TEXT.MORE_THEN_3_CHARACTERS}`;
   passwordAlertText: string = `Password ${ALERT_TEXT.MORE_THEN_8_CHARACTERS}`;
+  isRegistered = false;
   form: FormGroup = new FormGroup({
-    name: new FormControl('YRA'),
-    email: new FormControl('123@qq.qq'),
-    password: new FormControl('1123123123'),
+    name: new FormControl(InitialUser.name),
+    email: new FormControl(InitialUser.email),
+    password: new FormControl(InitialUser.password),
   });
 
   optionModalInfo: IModal = {
@@ -55,20 +57,25 @@ export class RegistrationComponent extends HelperInputPassword implements OnDest
     } else {
       this._authService
         .register(this.form.value)
-        .pipe(takeUntil(this.destroy$))
-        .subscribe(isRegistered => {
-          if (isRegistered) {
+        .pipe(
+          takeUntil(this.destroy$),
+          finalize(() => this.openModal())
+        )
+        .subscribe({
+          next: () => {
+            this.isRegistered = true;
             this.optionModalInfo.message = 'Registration successful!';
-          } else {
+          },
+          error: () => {
+            this.isRegistered = false;
             this.optionModalInfo.message = 'A user with this email already exists. Please login or use a different email';
-          }
-          this.openModal();
+          },
         });
     }
   }
 
   confirmButtonModal(): void {
-    if (this._authService.isRegistered) {
+    if (this.isRegistered) {
       this._router.navigateByUrl('/login');
     }
     this.closeModal();

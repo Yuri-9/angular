@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { BehaviorSubject, catchError, EMPTY, finalize, map, Observable, of, switchMap, tap } from 'rxjs';
+import { BehaviorSubject, EMPTY, finalize, Observable, switchMap, tap } from 'rxjs';
 import { SessionStorageService } from './session-storage.service';
 import { User } from 'src/app/app-model';
 import { InitialUserAdminData, PostResponse } from './auth-model';
@@ -33,7 +33,6 @@ export class AuthService {
       finalize(() => {
         this.authLoader$.next(false);
       }),
-      catchError(({ error }) => of(error)),
       switchMap((response: any) => {
         if (response.successful === true && response.result !== undefined) {
           const token = response.result;
@@ -47,21 +46,15 @@ export class AuthService {
     );
   }
 
-  register(user: User): Observable<boolean> {
+  register(user: User): Observable<PostResponse> {
     this.authLoader$.next(true);
     return this._http.post<PostResponse>(`${environment.baseUrl}/register`, user).pipe(
       finalize(() => {
         this.authLoader$.next(false);
       }),
-      catchError(({ error }) => of(error)),
-      map(response => {
+      tap(response => {
         if (response.successful === true) {
           this.user = { ...user };
-          this.isRegistered = true;
-          return true;
-        } else {
-          this.isRegistered = false;
-          return false;
         }
       })
     );

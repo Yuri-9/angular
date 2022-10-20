@@ -23,8 +23,10 @@ export class CoursesComponent implements OnInit, OnDestroy {
   ) {}
 
   handleLogout(): void {
-    this._authService.logout().pipe(takeUntil(this.destroy$)).subscribe();
-    this._router.navigateByUrl('login');
+    this._authService
+      .logout()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(() => this._router.navigateByUrl('login'));
   }
 
   ngOnInit(): void {

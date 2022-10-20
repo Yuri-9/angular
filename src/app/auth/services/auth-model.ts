@@ -1,9 +1,4 @@
-interface User {
-  name: string;
-  email: string;
-  password: string;
-  accessToken?: string;
-}
+import { User } from 'src/app/app-model';
 
 export interface PostResponse {
   successful: boolean;
