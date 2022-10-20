@@ -1,8 +1,8 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { faPencil, faTrash } from '@fortawesome/free-solid-svg-icons';
-import { ReplaySubject, takeUntil } from 'rxjs';
-import { UserStoreService } from 'src/app/user/services/user-store.service';
+
+import { UserStateFacade } from 'src/app/user/store/user.facade';
 import { Course } from '../courses/courses-model';
 
 @Component({
@@ -10,15 +10,14 @@ import { Course } from '../courses/courses-model';
   templateUrl: './course-view.component.html',
   styleUrls: ['./course-view.component.scss'],
 })
-export class CourseViewComponent implements OnInit, OnDestroy {
-  private readonly destroy$ = new ReplaySubject(1);
+export class CourseViewComponent {
   iconButtonEdit = faPencil;
   iconButtonDelete = faTrash;
   canEdit = true;
-  isAdmin = false;
+  isAdmin$ = this._userStateFacade.isAdmin$;
   course: Course;
 
-  constructor(private _router: Router, private _userStoreService: UserStoreService) {
+  constructor(private _router: Router, private _userStateFacade: UserStateFacade) {
     const course = this._router.getCurrentNavigation()?.extras.state as Course;
 
     this.course = course;
@@ -30,13 +29,5 @@ export class CourseViewComponent implements OnInit, OnDestroy {
 
   navigateToCourses(): void {
     this._router.navigateByUrl(`/courses`);
-  }
-  ngOnInit(): void {
-    this._userStoreService.isAdmin$.pipe(takeUntil(this.destroy$)).subscribe(isAdmin => (this.isAdmin = !!isAdmin));
-  }
-
-  ngOnDestroy(): void {
-    this.destroy$.next(() => {});
-    this.destroy$.complete();
   }
 }

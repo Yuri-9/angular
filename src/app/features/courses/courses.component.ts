@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { ReplaySubject, takeUntil } from 'rxjs';
 import { AuthService } from 'src/app/auth/services/auth.service';
 import { CoursesStoreService } from 'src/app/services/courses-store.service';
-import { UserStoreService } from 'src/app/user/services/user-store.service';
+import { UserStateFacade } from 'src/app/user/store/user.facade';
 
 @Component({
   selector: 'app-courses',
@@ -12,14 +12,14 @@ import { UserStoreService } from 'src/app/user/services/user-store.service';
 })
 export class CoursesComponent implements OnInit, OnDestroy {
   private readonly destroy$ = new ReplaySubject(1);
-  name: string = '';
+  name$ = this._userStateFacade.name$;
   isLoading: boolean = false;
 
   constructor(
     private _authService: AuthService,
     private _router: Router,
     private _coursesStoreService: CoursesStoreService,
-    private _userStoreService: UserStoreService
+    private _userStateFacade: UserStateFacade
   ) {}
 
   handleLogout(): void {
@@ -33,8 +33,6 @@ export class CoursesComponent implements OnInit, OnDestroy {
     this._coursesStoreService.isLoading$.pipe(takeUntil(this.destroy$)).subscribe(isLoading => {
       Promise.resolve().then(() => (this.isLoading = isLoading));
     });
-
-    this._userStoreService.name$.pipe(takeUntil(this.destroy$)).subscribe(name => (this.name = name || ''));
   }
 
   ngOnDestroy(): void {

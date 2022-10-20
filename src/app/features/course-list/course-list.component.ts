@@ -5,8 +5,10 @@ import { faPencil, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { IModal } from 'src/app/shared/components';
 import { Router } from '@angular/router';
 import { CoursesStoreService } from 'src/app/services/courses-store.service';
+
 import { concatMap, ReplaySubject, takeUntil } from 'rxjs';
-import { UserStoreService } from 'src/app/user/services/user-store.service';
+
+import { UserStateFacade } from 'src/app/user/store/user.facade';
 
 @Component({
   selector: 'app-course-list',
@@ -17,7 +19,7 @@ export class CourseListComponent implements OnInit, OnDestroy {
   private readonly destroy$ = new ReplaySubject(1);
   iconButtonEdit = faPencil;
   iconButtonDelete = faTrash;
-  isAdmin = true;
+  isAdmin$ = this._userStateFacade.isAdmin$;
   courses: Course[] = [];
   private currentCourse: Course | null = null;
   isOpenModal = false;
@@ -34,7 +36,7 @@ export class CourseListComponent implements OnInit, OnDestroy {
     buttonText: 'Add new course',
   };
 
-  constructor(private _router: Router, private _courseStoreService: CoursesStoreService, private _userStoreService: UserStoreService) {}
+  constructor(private _router: Router, private _courseStoreService: CoursesStoreService, private _userStateFacade: UserStateFacade) {}
 
   showCourse(course: Course): void {
     this._router.navigateByUrl(`/courses/${course.id}`, { state: course });
@@ -77,8 +79,6 @@ export class CourseListComponent implements OnInit, OnDestroy {
     this._courseStoreService.courses$.pipe(takeUntil(this.destroy$)).subscribe(courses => {
       this.courses = courses;
     });
-
-    this._userStoreService.isAdmin$.pipe(takeUntil(this.destroy$)).subscribe(isAdmin => (this.isAdmin = !!isAdmin));
   }
 
   ngOnDestroy(): void {

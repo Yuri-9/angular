@@ -4,14 +4,14 @@
     <li *ngFor="let course of courses">
       <app-course [course]="course">
         <app-button text="Show course" (clickButton)="showCourse(course)" title="Show course"></app-button>
-        <ng-template [ngIf]="isAdmin">
+        <ng-template [ngIf]="isAdmin$ | async">
           <app-button [icon]="iconButtonEdit" (clickButton)="editCourse(course)" title="Edit course"></app-button>
           <app-button [icon]="iconButtonDelete" (clickButton)="openModalDelete(course)" title="Delete course"></app-button>
         </ng-template>
       </app-course>
     </li>
   </ul>
-  <app-info *ngIf="isAdmin" [option]="infoOption" [isShowMessage]="!courses.length">
+  <app-info *ngIf="isAdmin$ | async" [option]="infoOption" [isShowMessage]="!courses.length">
     <app-button routerLink="add" text="Add course"> </app-button
   ></app-info>
 </div>
