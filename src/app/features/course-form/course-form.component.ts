@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { concatMap, ReplaySubject } from 'rxjs';
+import { concatMap, ReplaySubject, takeUntil } from 'rxjs';
 import { Author } from 'src/app/app-model';
 
 import { authorFieldValidator } from 'src/app/common/validators/author-field-validator';
@@ -18,8 +18,8 @@ const MINUTES_IN_DAY = 1440;
   styleUrls: ['./course-form.component.scss'],
 })
 export class CourseFormComponent implements OnInit, OnDestroy {
-  isSubmitted = false;
   private readonly destroy$ = new ReplaySubject(1);
+  isSubmitted = false;
   authors: Author[] = [];
   initialCourse: Course | null = null;
   buttonSaveText = '';
@@ -86,7 +86,7 @@ export class CourseFormComponent implements OnInit, OnDestroy {
     return !!this.initialCourse;
   }
 
-  saveCourse() {
+  saveCourse(): void {
     this.isSubmitted = true;
 
     const { title, description, duration } = this.form.value;
@@ -102,9 +102,9 @@ export class CourseFormComponent implements OnInit, OnDestroy {
       };
 
       if (this.isEdit) {
-        this._coursesStoreService.editCourse(newCourse).subscribe();
+        this._coursesStoreService.editCourse(newCourse).pipe(takeUntil(this.destroy$)).subscribe();
       } else {
-        this._coursesStoreService.createCourse(newCourse).subscribe();
+        this._coursesStoreService.createCourse(newCourse).pipe(takeUntil(this.destroy$)).subscribe();
       }
 
       this._router.navigateByUrl('/courses');
@@ -113,29 +113,35 @@ export class CourseFormComponent implements OnInit, OnDestroy {
     }
   }
 
-  createAuthor(event: Event) {
+  createAuthor(event: Event): void {
     event.preventDefault();
 
     if (this.authorName.value && this.authorName.valid) {
       this._authorsStoreService
         .addAuthor({ name: this.authorName.value })
-        .pipe(concatMap(() => this._authorsStoreService.getAll()))
+        .pipe(
+          takeUntil(this.destroy$),
+          concatMap(() => this._authorsStoreService.getAll())
+        )
         .subscribe();
 
       this.formAuthor.controls['authorName'].setValue('');
     }
   }
 
-  deleteAuthor(event: Event, author: FormGroup) {
+  deleteAuthor(event: Event, author: FormGroup): void {
     event.preventDefault();
 
     this._authorsStoreService
       .deleteAuthor(author.value)
-      .pipe(concatMap(() => this._authorsStoreService.getAll()))
+      .pipe(
+        takeUntil(this.destroy$),
+        concatMap(() => this._authorsStoreService.getAll())
+      )
       .subscribe();
   }
 
-  initForm() {
+  initForm(): void {
     if (this.initialCourse) {
       this.title.setValue(this.initialCourse.title);
       this.description.setValue(this.initialCourse.description);
@@ -143,14 +149,14 @@ export class CourseFormComponent implements OnInit, OnDestroy {
     }
   }
 
-  initFormOption() {
+  initFormOption(): void {
     this.buttonSaveText = this.isEdit ? 'Save course' : 'Create course';
   }
 
   initAuthorsLoad(): void {
-    this._authorsStoreService.getAll().subscribe();
+    this._authorsStoreService.getAll().pipe(takeUntil(this.destroy$)).subscribe();
 
-    this._authorsStoreService.authors$.subscribe(authors => {
+    this._authorsStoreService.authors$.pipe(takeUntil(this.destroy$)).subscribe(authors => {
       this.authorsList.clear();
 
       authors.forEach(author => {

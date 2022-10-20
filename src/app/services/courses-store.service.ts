@@ -19,12 +19,11 @@ export class CoursesStoreService {
 
   getAll(): Observable<Course[]> {
     this.isLoading$.next(true);
-    return combineLatest([this._coursesService.getAll(), this._authorService.getAll()])
-      .pipe(map(([courses, authors]) => CoursesStoreService.replaceAuthorIdsToNamesInCourses(courses, authors)))
-      .pipe(
-        finalize(() => this.isLoading$.next(false)),
-        tap(courses => this.courses$$.next(courses))
-      );
+    return combineLatest([this._coursesService.getAll(), this._authorService.getAll()]).pipe(
+      map(([courses, authors]) => CoursesStoreService.replaceAuthorIdsToNamesInCourses(courses, authors)),
+      finalize(() => this.isLoading$.next(false)),
+      tap(courses => this.courses$$.next(courses))
+    );
   }
 
   createCourse(course: Course): Observable<any> {
@@ -39,14 +38,13 @@ export class CoursesStoreService {
 
   filterCourse(queries: SearchQueriesCourse): Observable<any> {
     this.isLoading$.next(true);
-    return combineLatest([this._coursesService.filterCourse(queries), this._authorService.getAll()])
-      .pipe(map(([courses, authors]) => CoursesStoreService.replaceAuthorIdsToNamesInCourses(courses, authors)))
-      .pipe(finalize(() => this.isLoading$.next(false)))
-      .pipe(
-        tap(courses => {
-          this.courses$$.next(courses);
-        })
-      );
+    return combineLatest([this._coursesService.filterCourse(queries), this._authorService.getAll()]).pipe(
+      map(([courses, authors]) => CoursesStoreService.replaceAuthorIdsToNamesInCourses(courses, authors)),
+      finalize(() => this.isLoading$.next(false)),
+      tap(courses => {
+        this.courses$$.next(courses);
+      })
+    );
   }
 
   deleteCourse(course: Course): Observable<any> {

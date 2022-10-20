@@ -15,7 +15,7 @@ export interface SearchQueriesCourse {
 export class CoursesService {
   constructor(private _http: HttpClient) {}
 
-  getAll() {
+  getAll(): Observable<Course[]> {
     return this._http.get<ResponseGet<Course[]>>(`${environment.baseUrl}/courses/all`).pipe(
       delay(1000),
       map(response => response.result)

@@ -1,8 +1,9 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, OnDestroy, Output } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
+import { ReplaySubject, takeUntil } from 'rxjs';
 
-import { ALERT_TEXT, APP_ROUTS } from 'src/app/app-model';
+import { ALERT_TEXT } from 'src/app/app-model';
 import { AuthService } from 'src/app/auth/services/auth.service';
 import { IModal } from 'src/app/shared/components';
 import { HelperInputPassword } from '../helper/HelperInputPassword';
@@ -12,7 +13,8 @@ import { HelperInputPassword } from '../helper/HelperInputPassword';
   templateUrl: './registration.component.html',
   styleUrls: ['./registration.component.scss'],
 })
-export class RegistrationComponent extends HelperInputPassword {
+export class RegistrationComponent extends HelperInputPassword implements OnDestroy {
+  private readonly destroy$ = new ReplaySubject(1);
   nameAlertText: string = `Name ${ALERT_TEXT.MORE_THEN_3_CHARACTERS}`;
   passwordAlertText: string = `Password ${ALERT_TEXT.MORE_THEN_8_CHARACTERS}`;
   form: FormGroup = new FormGroup({
@@ -47,18 +49,21 @@ export class RegistrationComponent extends HelperInputPassword {
     return this.form.get('password');
   }
 
-  onSubmit() {
+  onSubmit(): void {
     if (!this.form.valid) {
       this.form.markAllAsTouched();
     } else {
-      this._authService.register(this.form.value).subscribe(isRegistered => {
-        if (isRegistered) {
-          this.optionModalInfo.message = 'Registration successful!';
-        } else {
-          this.optionModalInfo.message = 'A user with this email already exists. Please login or use a different email';
-        }
-        this.openModal();
-      });
+      this._authService
+        .register(this.form.value)
+        .pipe(takeUntil(this.destroy$))
+        .subscribe(isRegistered => {
+          if (isRegistered) {
+            this.optionModalInfo.message = 'Registration successful!';
+          } else {
+            this.optionModalInfo.message = 'A user with this email already exists. Please login or use a different email';
+          }
+          this.openModal();
+        });
     }
   }
 
@@ -73,7 +78,12 @@ export class RegistrationComponent extends HelperInputPassword {
     this.isOpenModal = true;
   }
 
-  closeModal() {
+  closeModal(): void {
     this.isOpenModal = false;
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next(() => {});
+    this.destroy$.complete();
   }
 }

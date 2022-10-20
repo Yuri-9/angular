@@ -1,19 +1,21 @@
-import { Component, EventEmitter, OnInit, Output, ViewChild } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 
-import { ALERT_TEXT, APP_ROUTS, User } from 'src/app/app-model';
+import { ALERT_TEXT, User } from 'src/app/app-model';
 
 import { HelperInputPassword } from '../helper/HelperInputPassword';
 import { Router } from '@angular/router';
 import { AuthService } from 'src/app/auth/services/auth.service';
 import { IModal } from 'src/app/shared/components';
+import { ReplaySubject, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss'],
 })
-export class LoginComponent extends HelperInputPassword implements OnInit {
+export class LoginComponent extends HelperInputPassword implements OnInit, OnDestroy {
   @ViewChild('formLogin') formLogin: any;
+  private readonly destroy$ = new ReplaySubject(1);
 
   userData: User = {};
   passwordAlertText: string = `Password ${ALERT_TEXT.MORE_THEN_8_CHARACTERS}`;
@@ -29,12 +31,9 @@ export class LoginComponent extends HelperInputPassword implements OnInit {
     super();
   }
 
-  @Output() navigateEvent = new EventEmitter<APP_ROUTS>();
-  @Output() loginEvent = new EventEmitter<User>();
-
   login(): void {
     if (this.formLogin.form.status === 'VALID') {
-      this._authService.login(this.userData);
+      this._authService.login(this.userData).pipe(takeUntil(this.destroy$)).subscribe();
       this.openModal();
     }
   }
@@ -58,7 +57,7 @@ export class LoginComponent extends HelperInputPassword implements OnInit {
   }
 
   initModalState(): void {
-    this._authService.isAuthorized$.subscribe(isAuthorized => {
+    this._authService.isAuthorized$.pipe(takeUntil(this.destroy$)).subscribe(isAuthorized => {
       if (isAuthorized) {
         this.optionModalInfo.message = 'Successful!!';
         this.redirectUrl = 'courses';
@@ -72,5 +71,10 @@ export class LoginComponent extends HelperInputPassword implements OnInit {
   ngOnInit(): void {
     this.initModalState();
     this.userData = this._authService.getUser();
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next(() => {});
+    this.destroy$.complete();
   }
 }

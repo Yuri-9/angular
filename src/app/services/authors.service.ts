@@ -10,7 +10,7 @@ import { Author, ResponseGet } from '../app-model';
 export class AuthorsService {
   constructor(private _http: HttpClient) {}
 
-  getAll() {
+  getAll(): Observable<Author[]> {
     return this._http.get<ResponseGet<Author[]>>(`${environment.baseUrl}/authors/all`).pipe(map(response => response.result));
   }
 

@@ -31,11 +31,11 @@ export class ModalComponent {
 
   constructor() {}
 
-  okClick() {
+  okClick(): void {
     this.okClickEvent.emit();
   }
 
-  closeModal() {
+  closeModal(): void {
     this.shouldHide = true;
     setTimeout(() => {
       this.closeModalEvent.emit();
@@ -43,7 +43,7 @@ export class ModalComponent {
     }, 255);
   }
 
-  stopPropagation(event: Event) {
+  stopPropagation(event: Event): void {
     event.stopPropagation();
   }
 }

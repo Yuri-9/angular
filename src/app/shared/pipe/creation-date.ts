@@ -4,7 +4,7 @@ import { Pipe, PipeTransform } from '@angular/core';
   name: 'creationDate',
 })
 export class CreationDate implements PipeTransform {
-  transform(data?: string) {
+  transform(data?: string): string {
     const dateParts = data?.split('/') || [];
 
     const dateObj = new Date(`${dateParts[1]}.${dateParts[0]}.${dateParts[2]}`);

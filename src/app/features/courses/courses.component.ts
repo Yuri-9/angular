@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { ReplaySubject, takeUntil } from 'rxjs';
 import { AuthService } from 'src/app/auth/services/auth.service';
 import { CoursesStoreService } from 'src/app/services/courses-store.service';
 import { UserStoreService } from 'src/app/user/services/user-store.service';
@@ -9,7 +10,8 @@ import { UserStoreService } from 'src/app/user/services/user-store.service';
   templateUrl: './courses.component.html',
   styleUrls: ['./courses.component.scss'],
 })
-export class CoursesComponent implements OnInit {
+export class CoursesComponent implements OnInit, OnDestroy {
+  private readonly destroy$ = new ReplaySubject(1);
   name: string = '';
   isLoading: boolean = false;
 
@@ -21,15 +23,20 @@ export class CoursesComponent implements OnInit {
   ) {}
 
   handleLogout(): void {
-    this._authService.logout();
+    this._authService.logout().pipe(takeUntil(this.destroy$)).subscribe();
     this._router.navigateByUrl('login');
   }
 
   ngOnInit(): void {
-    this._coursesStoreService.isLoading$.subscribe(isLoading => {
+    this._coursesStoreService.isLoading$.pipe(takeUntil(this.destroy$)).subscribe(isLoading => {
       Promise.resolve().then(() => (this.isLoading = isLoading));
     });
 
-    this._userStoreService.name$.subscribe(name => (this.name = name || ''));
+    this._userStoreService.name$.pipe(takeUntil(this.destroy$)).subscribe(name => (this.name = name || ''));
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next(() => {});
+    this.destroy$.complete();
   }
 }
