@@ -1,10 +1,10 @@
 import { Component, EventEmitter, OnDestroy, Output } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
-import { finalize, ReplaySubject, takeUntil } from 'rxjs';
+import { ReplaySubject, takeUntil } from 'rxjs';
 
 import { ALERT_TEXT } from 'src/app/app-model';
-import { AuthService } from 'src/app/auth/services/auth.service';
+import { AuthStateFacade } from 'src/app/auth/store/auth.facade';
 import { IModal } from 'src/app/shared/components';
 import { HelperInputPassword } from '../helper/HelperInputPassword';
 import { InitialUser } from './registration-model';
@@ -32,12 +32,10 @@ export class RegistrationComponent extends HelperInputPassword implements OnDest
   };
   isOpenModal = false;
 
-  constructor(private _authService: AuthService, private _router: Router) {
+  constructor(private authStateFacade: AuthStateFacade, private router: Router) {
     super();
+    this.authStateFacade.isRegistered$.pipe(takeUntil(this.destroy$)).subscribe(isRegistered => (this.isRegistered = isRegistered));
   }
-
-  @Output() navigateEvent = new EventEmitter();
-  @Output() registrationEvent = new EventEmitter();
 
   get name(): any {
     return this.form.get('name');
@@ -55,38 +53,31 @@ export class RegistrationComponent extends HelperInputPassword implements OnDest
     if (!this.form.valid) {
       this.form.markAllAsTouched();
     } else {
-      this._authService
-        .register(this.form.value)
-        .pipe(
-          takeUntil(this.destroy$),
-          finalize(() => this.openModal())
-        )
-        .subscribe({
-          next: () => {
-            this.isRegistered = true;
-            this.optionModalInfo.message = 'Registration successful!';
-          },
-          error: () => {
-            this.isRegistered = false;
-            this.optionModalInfo.message = 'A user with this email already exists. Please login or use a different email';
-          },
-        });
+      this.authStateFacade.register(this.form.value);
+      this.authStateFacade.isLoading$.pipe(takeUntil(this.destroy$)).subscribe(isLoading => {
+        if (!isLoading) {
+          this.openModal();
+        }
+      });
     }
-  }
-
-  confirmButtonModal(): void {
-    if (this.isRegistered) {
-      this._router.navigateByUrl('/login');
-    }
-    this.closeModal();
   }
 
   openModal(): void {
+    this.optionModalInfo.message = this.isRegistered
+      ? 'Registration successful!'
+      : 'A user with this email already exists. Please login or use a different email';
     this.isOpenModal = true;
   }
 
   closeModal(): void {
     this.isOpenModal = false;
+  }
+
+  confirmButtonModal(): void {
+    if (this.isRegistered) {
+      this.router.navigateByUrl('/login');
+    }
+    this.closeModal();
   }
 
   ngOnDestroy(): void {

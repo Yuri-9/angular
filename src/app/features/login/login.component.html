@@ -3,7 +3,7 @@
   <div class="login_container">
     <form class="login_form" (ngSubmit)="login()" #formLogin="ngForm">
       <legend class="title">Login</legend>
-      <fieldset class="login_fieldset" ngModelGroup="name">
+      <fieldset class="login_fieldset">
         <label class="label">
           Email
           <input class="input" type="email" required [(ngModel)]="userData.email" #email="ngModel" name="email" appEmailValidate />

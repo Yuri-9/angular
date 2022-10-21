@@ -2,6 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ReplaySubject, takeUntil } from 'rxjs';
 import { AuthService } from 'src/app/auth/services/auth.service';
+import { AuthStateFacade } from 'src/app/auth/store/auth.facade';
 import { CoursesStoreService } from 'src/app/services/courses-store.service';
 import { UserStateFacade } from 'src/app/user/store/user.facade';
 
@@ -16,17 +17,17 @@ export class CoursesComponent implements OnInit, OnDestroy {
   isLoading: boolean = false;
 
   constructor(
-    private _authService: AuthService,
-    private _router: Router,
+    private authStateFacade: AuthStateFacade,
+    private authService: AuthService,
+    private router: Router,
     private _coursesStoreService: CoursesStoreService,
     private _userStateFacade: UserStateFacade
   ) {}
 
   handleLogout(): void {
-    this._authService
-      .logout()
-      .pipe(takeUntil(this.destroy$))
-      .subscribe(() => this._router.navigateByUrl('login'));
+    this.authService.logout().pipe(takeUntil(this.destroy$)).subscribe();
+    this.authStateFacade.logout();
+    this.router.navigateByUrl('/login');
   }
 
   ngOnInit(): void {
