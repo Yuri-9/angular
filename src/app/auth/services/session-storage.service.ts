@@ -5,12 +5,6 @@ import { Inject, Injectable } from '@angular/core';
   providedIn: 'root',
 })
 export class SessionStorageService {
-  private window: Window | null;
-
-  constructor(@Inject(DOCUMENT) private document: Document) {
-    this.window = this.document.defaultView;
-  }
-
   setToken(token: string): void {
     sessionStorage.setItem('token', JSON.stringify(token));
   }

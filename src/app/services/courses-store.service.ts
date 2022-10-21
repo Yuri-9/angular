@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, combineLatest, finalize, map, Observable, tap } from 'rxjs';
-import { Author } from '../app-model';
+import { Author, FailedRequest, SuccessfulRequest } from '../app-model';
 import { Course } from '../features/courses/courses-model';
 import { AuthorsService } from './authors.service';
 
@@ -13,42 +13,43 @@ export class CoursesStoreService {
   private courses$$ = new BehaviorSubject<Course[]>([]);
   readonly courses$: Observable<Course[]> = this.courses$$.asObservable();
 
-  isLoading$ = new BehaviorSubject<boolean>(false);
+  private isLoading$$ = new BehaviorSubject<boolean>(false);
+  readonly isLoading$: Observable<boolean> = this.isLoading$$.asObservable();
 
   constructor(private _coursesService: CoursesService, private _authorService: AuthorsService) {}
 
   getAll(): Observable<Course[]> {
-    this.isLoading$.next(true);
+    this.isLoading$$.next(true);
     return combineLatest([this._coursesService.getAll(), this._authorService.getAll()]).pipe(
       map(([courses, authors]) => CoursesStoreService.replaceAuthorIdsToNamesInCourses(courses, authors)),
-      finalize(() => this.isLoading$.next(false)),
+      finalize(() => this.isLoading$$.next(false)),
       tap(courses => this.courses$$.next(courses))
     );
   }
 
-  createCourse(course: Course): Observable<any> {
-    this.isLoading$.next(true);
+  createCourse(course: Course): Observable<SuccessfulRequest<Course> | FailedRequest> {
+    this.isLoading$$.next(true);
     return this._coursesService.createCourse(course);
   }
 
-  editCourse(course: Course): Observable<any> {
-    this.isLoading$.next(true);
+  editCourse(course: Course): Observable<SuccessfulRequest<Course> | FailedRequest> {
+    this.isLoading$$.next(true);
     return this._coursesService.editCourse(course);
   }
 
-  filterCourse(queries: SearchQueriesCourse): Observable<any> {
-    this.isLoading$.next(true);
+  filterCourse(queries: SearchQueriesCourse): Observable<Course[]> {
+    this.isLoading$$.next(true);
     return combineLatest([this._coursesService.filterCourse(queries), this._authorService.getAll()]).pipe(
       map(([courses, authors]) => CoursesStoreService.replaceAuthorIdsToNamesInCourses(courses, authors)),
-      finalize(() => this.isLoading$.next(false)),
+      finalize(() => this.isLoading$$.next(false)),
       tap(courses => {
         this.courses$$.next(courses);
       })
     );
   }
 
-  deleteCourse(course: Course): Observable<any> {
-    this.isLoading$.next(true);
+  deleteCourse(course: Course): Observable<FailedRequest | {}> {
+    this.isLoading$$.next(true);
     return this._coursesService.deleteCourse(course);
   }
 

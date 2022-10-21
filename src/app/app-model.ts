@@ -15,7 +15,13 @@ export enum ALERT_TEXT {
   MORE_THEN_8_CHARACTERS = 'must be at least 8 characters',
 }
 
-export interface ResponseGet<T> {
-  successful: boolean;
+export interface SuccessfulRequest<T> {
+  successful: true;
   result: T;
+}
+
+export interface FailedRequest {
+  successful: false;
+  message?: string;
+  errors?: string[];
 }

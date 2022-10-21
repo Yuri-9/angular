@@ -2,8 +2,8 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, EMPTY, finalize, Observable, switchMap, tap } from 'rxjs';
 import { SessionStorageService } from './session-storage.service';
-import { User } from 'src/app/app-model';
-import { InitialUserAdminData, PostResponse } from './auth-model';
+import { FailedRequest, SuccessfulRequest, User } from 'src/app/app-model';
+import { InitialUserAdminData } from './auth-model';
 import { environment } from 'src/environments/environment';
 import { UserStoreService } from 'src/app/user/services/user-store.service';
 
@@ -18,10 +18,10 @@ export class AuthService {
 
   authLoader$ = new BehaviorSubject<boolean>(false);
 
-  // InitialUserAdminData login as admin. It allows to avoid 403 error
+  //TODO InitialUserAdminData login as admin, remove it for prod
   user: User = InitialUserAdminData;
 
-  constructor(private _http: HttpClient, private _storage: SessionStorageService, private _userStoreService: UserStoreService) {}
+  constructor(private _http: HttpClient, private _storageService: SessionStorageService, private _userStoreService: UserStoreService) {}
 
   getUser(): User {
     return this.user;
@@ -29,15 +29,15 @@ export class AuthService {
 
   login(user: User): Observable<User> {
     this.authLoader$.next(true);
-    return this._http.post(`${environment.baseUrl}/login`, user).pipe(
+    return this._http.post<SuccessfulRequest<string> | FailedRequest>(`${environment.baseUrl}/login`, user).pipe(
       finalize(() => {
         this.authLoader$.next(false);
       }),
-      switchMap((response: any) => {
+      switchMap(response => {
         if (response.successful === true && response.result !== undefined) {
           const token = response.result;
           this.isAuthorized$$.next(true);
-          this._storage.setToken(token);
+          this._storageService.setToken(token);
           this.user.accessToken = token;
           return this._userStoreService.getUser();
         }
@@ -46,9 +46,9 @@ export class AuthService {
     );
   }
 
-  register(user: User): Observable<PostResponse> {
+  register(user: User): Observable<SuccessfulRequest<User> | FailedRequest> {
     this.authLoader$.next(true);
-    return this._http.post<PostResponse>(`${environment.baseUrl}/register`, user).pipe(
+    return this._http.post<SuccessfulRequest<User> | FailedRequest>(`${environment.baseUrl}/register`, user).pipe(
       finalize(() => {
         this.authLoader$.next(false);
       }),
@@ -60,8 +60,8 @@ export class AuthService {
     );
   }
 
-  logout(): Observable<any> {
-    const token = this._storage.getToken();
+  logout(): Observable<FailedRequest | {}> {
+    const token = this._storageService.getToken();
     return this._http
       .delete(`${environment.baseUrl}/logout`, {
         headers: {
@@ -71,7 +71,7 @@ export class AuthService {
       .pipe(
         tap(() => {
           this.isAuthorized$$.next(false);
-          this._storage.deleteToken();
+          this._storageService.deleteToken();
         })
       );
   }
