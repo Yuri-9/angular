@@ -19,7 +19,7 @@ export class CourseListComponent implements OnInit, OnDestroy {
   private readonly destroy$ = new ReplaySubject(1);
   iconButtonEdit = faPencil;
   iconButtonDelete = faTrash;
-  isAdmin$ = this._userStateFacade.isAdmin$;
+  isAdmin$ = this.userStateFacade.isAdmin$;
   courses: Course[] = [];
   private currentCourse: Course | null = null;
   isOpenModal = false;
@@ -36,7 +36,7 @@ export class CourseListComponent implements OnInit, OnDestroy {
     buttonText: 'Add new course',
   };
 
-  constructor(private _router: Router, private _courseStoreService: CoursesStoreService, private _userStateFacade: UserStateFacade) {}
+  constructor(private _router: Router, private _courseStoreService: CoursesStoreService, private userStateFacade: UserStateFacade) {}
 
   showCourse(course: Course): void {
     this._router.navigateByUrl(`/courses/${course.id}`, { state: course });

@@ -12,7 +12,7 @@ export class UserEffects {
     return this.actions$.pipe(
       ofType(UserActions.requestCurrentUser),
       mergeMap(() =>
-        this._userService.getUser().pipe(
+        this.userService.getUser().pipe(
           map(user => UserActions.requestCurrentUserSuccess({ name: user.name || '', isAdmin: user.role === 'admin' })),
           catchError(() => of(UserActions.requestCurrentUserFail()))
         )
@@ -20,5 +20,5 @@ export class UserEffects {
     );
   });
 
-  constructor(private actions$: Actions, private _userService: UserService) {}
+  constructor(private actions$: Actions, private userService: UserService) {}
 }
