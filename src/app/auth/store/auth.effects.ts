@@ -13,7 +13,7 @@ export class AuthEffects {
     return this.actions$.pipe(
       ofType(AuthActions.requestLogin),
       mergeMap(({ user }) =>
-        this._authService.login(user).pipe(
+        this.authService.login(user).pipe(
           map(token => AuthActions.requestLoginSuccess({ token })),
           catchError(({ error }: { error: SuccessfulRequest<string> }) => {
             return of(AuthActions.requestLoginFail({ errorMessageLogin: error.result }));
@@ -27,7 +27,7 @@ export class AuthEffects {
     return this.actions$.pipe(
       ofType(AuthActions.requestRegister),
       mergeMap(({ user }) =>
-        this._authService.register(user).pipe(
+        this.authService.register(user).pipe(
           map(user => AuthActions.requestRegisterSuccess({ user })),
           catchError(({ error }: { error: FailedRequest }) => {
             return of(AuthActions.requestRegisterFail({ errorMessageRegister: error.errors?.[0] || '' }));
@@ -37,5 +37,5 @@ export class AuthEffects {
     );
   });
 
-  constructor(private actions$: Actions, private _authService: AuthService) {}
+  constructor(private actions$: Actions, private authService: AuthService) {}
 }

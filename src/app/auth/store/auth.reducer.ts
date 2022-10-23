@@ -27,9 +27,17 @@ export const initialState: AuthState = {
 const reducer = createReducer(
   initialState,
   on(AuthActions.requestLogin, (state): AuthState => ({ ...state, isLoading: true })),
-  on(AuthActions.requestLoginSuccess, (state, { token }): AuthState => ({ ...state, token, isAuthorized: true, errorMessageLogin: '' })),
-  on(AuthActions.requestLoginFail, (state, { errorMessageLogin }): AuthState => ({ ...state, errorMessageLogin, isAuthorized: false })),
+  on(
+    AuthActions.requestLoginSuccess,
+    (state, { token }): AuthState => ({ ...state, token, isAuthorized: true, errorMessageLogin: '', isLoading: false })
+  ),
+  on(
+    AuthActions.requestLoginFail,
+    (state, { errorMessageLogin }): AuthState => ({ ...state, errorMessageLogin, isAuthorized: false, isLoading: false })
+  ),
+
   on(AuthActions.requestLogout, (state): AuthState => ({ ...state, isAuthorized: false })),
+
   on(AuthActions.requestRegister, (state): AuthState => ({ ...state, isLoading: true })),
   on(
     AuthActions.requestRegisterSuccess,
@@ -41,4 +49,4 @@ const reducer = createReducer(
   )
 );
 
-export const AuthReducer = (state: AuthState | undefined, action: Action): AuthState => reducer(state, action);
+export const authReducer = (state: AuthState | undefined, action: Action): AuthState => reducer(state, action);

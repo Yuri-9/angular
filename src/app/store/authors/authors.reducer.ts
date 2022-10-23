@@ -3,7 +3,7 @@ import { Author } from 'src/app/app-model';
 
 import { AuthorsActions } from './authors.actions';
 
-export const authorFeatureKey = 'author';
+export const authorsFeatureKey = 'authors';
 
 export interface AuthorsState {
   authors: Author[];
@@ -27,12 +27,12 @@ const reducer = createReducer(
   on(AuthorsActions.requestAuthorsFail, (state): AuthorsState => ({ ...state, isLoading: false })),
 
   on(AuthorsActions.requestAddAuthor, (state): AuthorsState => ({ ...state, isLoading: true })),
-  on(AuthorsActions.requestAddAuthorSuccess, (state, { author }): AuthorsState => ({ ...state, addedAuthor: author, isLoading: false })),
+  on(AuthorsActions.requestAddAuthorSuccess, (state, { author }): AuthorsState => ({ ...state, addedAuthor: author })),
   on(AuthorsActions.requestAddAuthorFail, (state): AuthorsState => ({ ...state, isLoading: false })),
 
   on(AuthorsActions.requestDeleteAuthor, (state): AuthorsState => ({ ...state, isLoading: true })),
-  on(AuthorsActions.requestDeleteAuthorSuccess, (state): AuthorsState => ({ ...state, isLoading: false })),
+  on(AuthorsActions.requestDeleteAuthorSuccess, (state): AuthorsState => ({ ...state })),
   on(AuthorsActions.requestAddAuthorFail, (state): AuthorsState => ({ ...state, isLoading: false }))
 );
 
-export const AuthorsReducer = (state: AuthorsState | undefined, action: Action): AuthorsState => reducer(state, action);
+export const authorsReducer = (state: AuthorsState | undefined, action: Action): AuthorsState => reducer(state, action);

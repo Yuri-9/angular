@@ -8,6 +8,7 @@ import { AuthorsSelectors } from './authors.selectors';
 export class AuthorsStateFacade {
   addedAuthor$ = this.store.select(AuthorsSelectors.selectAddedAuthor);
   authors$ = this.store.select(AuthorsSelectors.selectAuthors);
+  isLoading$ = this.store.select(AuthorsSelectors.selectIsLoading);
 
   constructor(private store: Store) {}
 

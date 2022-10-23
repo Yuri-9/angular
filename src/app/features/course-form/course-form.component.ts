@@ -6,9 +6,9 @@ import { Author } from 'src/app/app-model';
 import { AuthorsStateFacade } from 'src/app/store/authors/authors.facade';
 
 import { authorFieldValidator } from 'src/app/common/validators/author-field-validator';
-import { CoursesStoreService } from 'src/app/services/courses-store.service';
 
 import { Course } from '../courses/courses-model';
+import { CoursesStateFacade } from 'src/app/store/courses/courses.facade';
 
 const MINUTES_IN_DAY = 1440;
 
@@ -45,11 +45,13 @@ export class CourseFormComponent implements OnInit, OnDestroy {
     ),
   });
 
-  constructor(private authorsStateFacade: AuthorsStateFacade, private coursesStoreService: CoursesStoreService, private router: Router) {
+  constructor(private authorsStateFacade: AuthorsStateFacade, private courseStoreFacade: CoursesStateFacade, private router: Router) {
     const course = this.router.getCurrentNavigation()?.extras.state as Course;
     if (course) {
       this.initialCourse = course;
     }
+
+    this.authorsStateFacade.getAuthors();
   }
 
   ngOnInit(): void {
@@ -98,12 +100,10 @@ export class CourseFormComponent implements OnInit, OnDestroy {
       };
 
       if (this.isEdit) {
-        this.coursesStoreService.editCourse(newCourse).pipe(takeUntil(this.destroy$)).subscribe();
+        this.courseStoreFacade.editCourse(newCourse);
       } else {
-        this.coursesStoreService.createCourse(newCourse).pipe(takeUntil(this.destroy$)).subscribe();
+        this.courseStoreFacade.createCourse(newCourse);
       }
-
-      this.router.navigateByUrl('/courses');
     } else {
       this.form.markAllAsTouched();
     }
@@ -138,8 +138,6 @@ export class CourseFormComponent implements OnInit, OnDestroy {
   }
 
   initAuthorsLoad(): void {
-    this.authorsStateFacade.getAuthors();
-
     this.authorsStateFacade.authors$.pipe(takeUntil(this.destroy$)).subscribe(authors => {
       this.authorsList.clear();
 

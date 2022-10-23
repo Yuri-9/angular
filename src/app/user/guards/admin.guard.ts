@@ -8,11 +8,11 @@ import { UserStateFacade } from '../store/user.facade';
   providedIn: 'root',
 })
 export class AdminGuard implements CanActivate {
-  constructor(private _userStateFacade: UserStateFacade, private _router: Router) {}
+  constructor(private userStateFacade: UserStateFacade, private router: Router) {}
   canActivate(): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
-    return this._userStateFacade.isAdmin$.pipe(
+    return this.userStateFacade.isAdmin$.pipe(
       map(isAdmin => {
-        return isAdmin || this._router.createUrlTree(['/courses']);
+        return isAdmin || this.router.createUrlTree(['/courses']);
       })
     );
   }

@@ -13,21 +13,20 @@ import { Course } from '../courses/courses-model';
 export class CourseViewComponent {
   iconButtonEdit = faPencil;
   iconButtonDelete = faTrash;
-  canEdit = true;
-  isAdmin$ = this._userStateFacade.isAdmin$;
+  isAdmin$ = this.userStateFacade.isAdmin$;
   course: Course;
 
-  constructor(private _router: Router, private _userStateFacade: UserStateFacade) {
-    const course = this._router.getCurrentNavigation()?.extras.state as Course;
+  constructor(private router: Router, private userStateFacade: UserStateFacade) {
+    const course = this.router.getCurrentNavigation()?.extras.state as Course;
 
     this.course = course;
   }
 
   editCourse(course: Course): void {
-    this._router.navigateByUrl(`/courses/edit/${course.id}`, { state: course });
+    this.router.navigateByUrl(`/courses/edit/${course.id}`, { state: course });
   }
 
   navigateToCourses(): void {
-    this._router.navigateByUrl(`/courses`);
+    this.router.navigateByUrl(`/courses`);
   }
 }

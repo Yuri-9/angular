@@ -1,9 +1,11 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { ReplaySubject, takeUntil } from 'rxjs';
+import { combineLatest, map, Observable, of, ReplaySubject, takeUntil } from 'rxjs';
 import { AuthService } from 'src/app/auth/services/auth.service';
 import { AuthStateFacade } from 'src/app/auth/store/auth.facade';
-import { CoursesStoreService } from 'src/app/services/courses-store.service';
+import { isSomeValuesTrue } from 'src/app/common/helper';
+import { AuthorsStateFacade } from 'src/app/store/authors/authors.facade';
+import { CoursesStateFacade } from 'src/app/store/courses/courses.facade';
 import { UserStateFacade } from 'src/app/user/store/user.facade';
 
 @Component({
@@ -13,16 +15,22 @@ import { UserStateFacade } from 'src/app/user/store/user.facade';
 })
 export class CoursesComponent implements OnInit, OnDestroy {
   private readonly destroy$ = new ReplaySubject(1);
-  name$ = this._userStateFacade.name$;
-  isLoading: boolean = false;
+  name$ = this.userStateFacade.name$;
+
+  isLoading$: Observable<boolean> = of(false);
 
   constructor(
-    private authStateFacade: AuthStateFacade,
     private authService: AuthService,
-    private router: Router,
-    private _coursesStoreService: CoursesStoreService,
-    private _userStateFacade: UserStateFacade
+    private authStateFacade: AuthStateFacade,
+    private userStateFacade: UserStateFacade,
+    private coursesStateFacade: CoursesStateFacade,
+    private authorStateFacade: AuthorsStateFacade,
+    private router: Router
   ) {}
+
+  ngOnInit(): void {
+    this.initLoadingState();
+  }
 
   handleLogout(): void {
     this.authService.logout().pipe(takeUntil(this.destroy$)).subscribe();
@@ -30,10 +38,12 @@ export class CoursesComponent implements OnInit, OnDestroy {
     this.router.navigateByUrl('/login');
   }
 
-  ngOnInit(): void {
-    this._coursesStoreService.isLoading$.pipe(takeUntil(this.destroy$)).subscribe(isLoading => {
-      Promise.resolve().then(() => (this.isLoading = isLoading));
-    });
+  initLoadingState(): void {
+    this.isLoading$ = combineLatest([
+      this.coursesStateFacade.isCourseLoading$,
+      this.coursesStateFacade.isCoursesLoading$,
+      this.authorStateFacade.isLoading$,
+    ]).pipe(map(loaderStates => isSomeValuesTrue(loaderStates)));
   }
 
   ngOnDestroy(): void {

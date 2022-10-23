@@ -1,7 +1,7 @@
 <div>
   <app-search placeholder="Name course" (searchEvent)="searchCourse($event)"> </app-search>
   <ul class="course-list">
-    <li *ngFor="let course of courses">
+    <li *ngFor="let course of courses$ | async">
       <app-course [course]="course">
         <app-button text="Show course" (clickButton)="showCourse(course)" title="Show course"></app-button>
         <ng-template [ngIf]="isAdmin$ | async">
@@ -11,7 +11,7 @@
       </app-course>
     </li>
   </ul>
-  <app-info *ngIf="isAdmin$ | async" [option]="infoOption" [isShowMessage]="!courses.length">
+  <app-info *ngIf="isAdmin$ | async" [option]="infoOption" [isShowMessage]="!(courses$ | async)?.length">
     <app-button routerLink="add" text="Add course"> </app-button
   ></app-info>
 </div>

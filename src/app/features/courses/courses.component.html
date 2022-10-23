@@ -1,5 +1,5 @@
-<app-loader [isLoading]="isLoading"></app-loader>
 <div>
+  <app-loader [isLoading]="isLoading$ | async"></app-loader>
   <app-header>
     <div>{{ name$ | async }}</div>
     <app-button (clickButton)="handleLogout()">Logout</app-button>

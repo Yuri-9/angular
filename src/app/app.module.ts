@@ -13,6 +13,7 @@ import { EffectsModule } from '@ngrx/effects';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { environment } from '../environments/environment';
 import { AuthorsStateFacade } from './store/authors/authors.facade';
+import { CoursesStateFacade } from './store/courses/courses.facade';
 @NgModule({
   declarations: [AppComponent],
   imports: [
@@ -32,6 +33,7 @@ import { AuthorsStateFacade } from './store/authors/authors.facade';
       multi: true,
     },
     AuthorsStateFacade,
+    CoursesStateFacade,
   ],
   bootstrap: [AppComponent],
 })
