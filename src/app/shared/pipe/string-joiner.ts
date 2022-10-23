@@ -4,7 +4,7 @@ import { Pipe, PipeTransform } from '@angular/core';
   name: 'stringJoiner',
 })
 export class StringJoiner implements PipeTransform {
-  transform(array: Array<string>, separator: string) {
+  transform(array: Array<string>, separator: string): string {
     return array.join(separator);
   }
 }

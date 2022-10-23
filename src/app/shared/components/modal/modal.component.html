@@ -1,12 +1,12 @@
 <div class="modal-wrapper" [class.shouldHide]="shouldHide" *ngIf="open">
   <div class="modal" (click)="stopPropagation($event)">
-    <fa-icon class="modal_cross" size="xl" [icon]="iconClose" (click)="closeModal()"> </fa-icon>
+    <fa-icon *ngIf="option.cancelButtonText" class="modal_cross" size="xl" [icon]="iconClose" (click)="closeModal()"> </fa-icon>
 
     <h2 class="title">{{ option.title }}</h2>
     <p class="message" [innerHTML]="option.message"></p>
     <div class="buttons-container">
-      <app-button (clickButton)="okClick()" [text]="option.okButtonText"></app-button>
-      <app-button (clickButton)="closeModal()" [text]="option.cancelButtonText"></app-button>
+      <app-button *ngIf="option.okButtonText" (clickButton)="okClick()" [text]="option.okButtonText"></app-button>
+      <app-button *ngIf="option.cancelButtonText" (clickButton)="closeModal()" [text]="option.cancelButtonText"></app-button>
     </div>
   </div>
 </div>

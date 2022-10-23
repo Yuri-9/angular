@@ -13,7 +13,7 @@ export class ButtonComponent {
 
   constructor() {}
 
-  onClick() {
+  onClick(): void {
     this.clickButton.emit();
   }
 }

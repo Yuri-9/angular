@@ -19,7 +19,7 @@
           <input
             class="input"
             required
-            minlength="8"
+            minlength="6"
             [type]="inputType"
             [(ngModel)]="userData.password"
             #password="ngModel"
@@ -40,7 +40,8 @@
     </form>
     <div class="question">
       <p>If you don't have an account you can</p>
-      <a href="#" (click)="navigateToRegistration($event)">Registration</a>
+      <a routerLink="/registration">Registration</a>
     </div>
   </div>
+  <app-modal [option]="optionModalInfo" [open]="isOpenModal" (okClickEvent)="confirmButtonModal()"></app-modal>
 </div>

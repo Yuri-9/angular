@@ -5,10 +5,12 @@ import { CoursesComponent } from './courses.component';
 import { CourseComponent } from '../course/course.component';
 import { CourseListComponent } from '../course-list/course-list.component';
 import { CourseFormComponent } from '../course-form/course-form.component';
+import { CoursesRoutingModule } from './courses-routing.module';
+import { CourseViewComponent } from '../course-view/course-view.component';
 
 @NgModule({
-  declarations: [CoursesComponent, CourseComponent, CourseListComponent, CourseFormComponent],
-  imports: [CommonModule, SharedModule],
+  declarations: [CoursesComponent, CourseComponent, CourseListComponent, CourseFormComponent, CourseViewComponent],
+  imports: [CommonModule, SharedModule, CoursesRoutingModule],
   bootstrap: [CoursesComponent],
   exports: [CoursesComponent],
 })

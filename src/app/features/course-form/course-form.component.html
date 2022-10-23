@@ -1,4 +1,4 @@
-<form [formGroup]="form" class="'form" novalidate (ngSubmit)="onSubmit()">
+<form [formGroup]="form" class="'form" novalidate (ngSubmit)="saveCourse()">
   <legend class="visually-hidden">Title and description</legend>
   <fieldset class="course-form-fieldset">
     <div class="title_container">
@@ -9,7 +9,7 @@
           <p *ngIf="title.errors?.['required']">Title is required</p>
         </div>
       </label>
-      <app-button>Create Course</app-button>
+      <app-button>{{ buttonSaveText }}</app-button>
     </div>
     <label class="label">
       Description
@@ -58,13 +58,15 @@
     <fieldset class="course-form-fieldset additional-fields_item authors" [formGroup]="formAuthorList">
       <legend class="legend">Authors list</legend>
       <ul formArrayName="authorList">
-        <li class="author-item" *ngFor="let author of authorListControls; let i = index">
-          <input class="disable-input" formControlName="{{ i }}" type="text" [attr.disabled]="true" />
-          <app-button (click)="deleteAuthor($event, i)">Delete author</app-button>
+        <li class="author-item" *ngFor="let author of authorsList.controls; let i = index">
+          <ng-container [formGroupName]="i">
+            <input class="disable-input" type="text" [attr.disabled]="true" formControlName="name" />
+          </ng-container>
+          <app-button (click)="deleteAuthor($event, author)">Delete author</app-button>
         </li>
       </ul>
-      <div class="alert" *ngIf="authorList.errors && isSubmitted">
-        <p *ngIf="authorList.errors?.['required']">Authors list is required</p>
+      <div class="alert" *ngIf="authorsList.errors && isSubmitted">
+        <p *ngIf="authorsList.errors?.['required']">Authors list is required</p>
       </div>
     </fieldset>
   </div>

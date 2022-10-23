@@ -8,7 +8,7 @@ export class Duration implements PipeTransform {
   readonly maxLimit = 1440;
   readonly numberTen = 10;
 
-  transform(minutes: number) {
+  transform(minutes: number): string {
     const correctNumber = minutes >= this.minLimit && minutes <= this.maxLimit ? Math.floor(minutes) : 0;
 
     const hours = Math.floor(correctNumber / 60);

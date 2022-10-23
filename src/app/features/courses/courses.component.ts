@@ -1,58 +1,44 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { APP_ROUTS, User } from 'src/app/app-model';
-
-import { courses, Course } from './courses-model';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { ReplaySubject, takeUntil } from 'rxjs';
+import { AuthService } from 'src/app/auth/services/auth.service';
+import { CoursesStoreService } from 'src/app/services/courses-store.service';
+import { UserStoreService } from 'src/app/user/services/user-store.service';
 
 @Component({
   selector: 'app-courses',
   templateUrl: './courses.component.html',
   styleUrls: ['./courses.component.scss'],
 })
-export class CoursesComponent {
-  infoOption = {
-    title: 'Your list is empty',
-    message: "Please use the <b>'Add new course'</b> button to add your first course",
-    buttonText: 'Add new course',
-  };
-  courses: Course[] = courses;
-  buttonText = 'Logout';
-  filterString = '';
-  isEditCourse = false;
+export class CoursesComponent implements OnInit, OnDestroy {
+  private readonly destroy$ = new ReplaySubject(1);
+  name: string = '';
+  isLoading: boolean = false;
 
-  @Input() user: User = { name: '', email: '', password: '' };
-  @Output() navigateEvent = new EventEmitter();
-
-  showCourse(id: string) {
-    console.log('show course', id);
-  }
-
-  editCourse(id: string) {
-    console.log('edit course', id);
-  }
-
-  deleteCourse(id: string) {
-    this.courses = this.courses.filter(course => course.id !== id);
-  }
-
-  addCourseClickButton() {
-    this.isEditCourse = true;
-  }
+  constructor(
+    private _authService: AuthService,
+    private _router: Router,
+    private _coursesStoreService: CoursesStoreService,
+    private _userStoreService: UserStoreService
+  ) {}
 
   handleLogout(): void {
-    this.navigateEvent.emit(APP_ROUTS.LOGIN);
+    this._authService
+      .logout()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(() => this._router.navigateByUrl('login'));
   }
 
-  searchCourse(nameCourse: string) {
-    this.filterString = nameCourse;
+  ngOnInit(): void {
+    this._coursesStoreService.isLoading$.pipe(takeUntil(this.destroy$)).subscribe(isLoading => {
+      Promise.resolve().then(() => (this.isLoading = isLoading));
+    });
+
+    this._userStoreService.name$.pipe(takeUntil(this.destroy$)).subscribe(name => (this.name = name || ''));
   }
 
-  createCourse(course: Course) {
-    this.courses.push(course);
-    this.isEditCourse = false;
-  }
-
-  get filteredCourses() {
-    const regExpFilterString = new RegExp(this.filterString, 'i');
-    return this.courses.filter(({ title }) => title.match(regExpFilterString));
+  ngOnDestroy(): void {
+    this.destroy$.next(() => {});
+    this.destroy$.complete();
   }
 }
