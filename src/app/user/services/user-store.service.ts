@@ -13,10 +13,10 @@ export class UserStoreService {
   private isAdmin$$ = new BehaviorSubject<boolean | undefined>(false);
   readonly isAdmin$: Observable<boolean | undefined> = this.isAdmin$$.asObservable();
 
-  constructor(private _userService: UserService) {}
+  constructor(private userService: UserService) {}
 
   getUser(): Observable<User> {
-    return this._userService.getUser().pipe(
+    return this.userService.getUser().pipe(
       tap(user => {
         this.name$$.next(user.name);
         this.isAdmin$$.next(user.role === 'admin');

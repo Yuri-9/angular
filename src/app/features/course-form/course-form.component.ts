@@ -1,14 +1,14 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { concatMap, ReplaySubject, takeUntil } from 'rxjs';
+import { ReplaySubject, takeUntil } from 'rxjs';
 import { Author } from 'src/app/app-model';
+import { AuthorsStateFacade } from 'src/app/store/authors/authors.facade';
 
 import { authorFieldValidator } from 'src/app/common/validators/author-field-validator';
-import { AuthorsStoreService } from 'src/app/services/authors-store.service';
-import { CoursesStoreService } from 'src/app/services/courses-store.service';
 
 import { Course } from '../courses/courses-model';
+import { CoursesStateFacade } from 'src/app/store/courses/courses.facade';
 
 const MINUTES_IN_DAY = 1440;
 
@@ -45,15 +45,13 @@ export class CourseFormComponent implements OnInit, OnDestroy {
     ),
   });
 
-  constructor(
-    private _authorsStoreService: AuthorsStoreService,
-    private _coursesStoreService: CoursesStoreService,
-    private _router: Router
-  ) {
-    const course = this._router.getCurrentNavigation()?.extras.state as Course;
+  constructor(private authorsStateFacade: AuthorsStateFacade, private courseStoreFacade: CoursesStateFacade, private router: Router) {
+    const course = this.router.getCurrentNavigation()?.extras.state as Course;
     if (course) {
       this.initialCourse = course;
     }
+
+    this.authorsStateFacade.getAuthors();
   }
 
   ngOnInit(): void {
@@ -102,12 +100,10 @@ export class CourseFormComponent implements OnInit, OnDestroy {
       };
 
       if (this.isEdit) {
-        this._coursesStoreService.editCourse(newCourse).pipe(takeUntil(this.destroy$)).subscribe();
+        this.courseStoreFacade.editCourse(newCourse);
       } else {
-        this._coursesStoreService.createCourse(newCourse).pipe(takeUntil(this.destroy$)).subscribe();
+        this.courseStoreFacade.createCourse(newCourse);
       }
-
-      this._router.navigateByUrl('/courses');
     } else {
       this.form.markAllAsTouched();
     }
@@ -117,13 +113,7 @@ export class CourseFormComponent implements OnInit, OnDestroy {
     event.preventDefault();
 
     if (this.authorName.value && this.authorName.valid) {
-      this._authorsStoreService
-        .addAuthor({ name: this.authorName.value })
-        .pipe(
-          takeUntil(this.destroy$),
-          concatMap(() => this._authorsStoreService.getAll())
-        )
-        .subscribe();
+      this.authorsStateFacade.addAuthor({ name: this.authorName.value });
 
       this.formAuthor.controls['authorName'].setValue('');
     }
@@ -132,13 +122,7 @@ export class CourseFormComponent implements OnInit, OnDestroy {
   deleteAuthor(event: Event, author: FormGroup): void {
     event.preventDefault();
 
-    this._authorsStoreService
-      .deleteAuthor(author.value)
-      .pipe(
-        takeUntil(this.destroy$),
-        concatMap(() => this._authorsStoreService.getAll())
-      )
-      .subscribe();
+    this.authorsStateFacade.deleteAuthor(author.value);
   }
 
   initForm(): void {
@@ -154,9 +138,7 @@ export class CourseFormComponent implements OnInit, OnDestroy {
   }
 
   initAuthorsLoad(): void {
-    this._authorsStoreService.getAll().pipe(takeUntil(this.destroy$)).subscribe();
-
-    this._authorsStoreService.authors$.pipe(takeUntil(this.destroy$)).subscribe(authors => {
+    this.authorsStateFacade.authors$.pipe(takeUntil(this.destroy$)).subscribe(authors => {
       this.authorsList.clear();
 
       authors.forEach(author => {

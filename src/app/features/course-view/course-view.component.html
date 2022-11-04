@@ -1,6 +1,6 @@
 <div>
   <app-course [course]="course">
-    <ng-template [ngIf]="isAdmin">
+    <ng-template [ngIf]="isAdmin$ | async">
       <app-button [icon]="iconButtonEdit" (clickButton)="editCourse(course)" title="Edit course"></app-button>
     </ng-template>
   </app-course>

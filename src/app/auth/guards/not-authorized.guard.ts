@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { CanActivate, Router, UrlTree } from '@angular/router';
 import { Observable } from 'rxjs';
-import { AuthService } from '../services/auth.service';
+import { AuthStateFacade } from '../store/auth.facade';
 
 @Injectable({
   providedIn: 'root',
@@ -9,15 +9,15 @@ import { AuthService } from '../services/auth.service';
 export class NotAuthorizedGuard implements CanActivate {
   isAuthorized = false;
 
-  constructor(private _authService: AuthService, private _router: Router) {}
+  constructor(private authStateFacade: AuthStateFacade, private router: Router) {}
   canActivate(): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
-    this._authService.isAuthorized$.subscribe(isAuthorized => {
+    this.authStateFacade.isAuthorized$.subscribe(isAuthorized => {
       this.isAuthorized = isAuthorized;
     });
     if (!this.isAuthorized) {
       return true;
     }
 
-    return this._router.createUrlTree(['/courses']);
+    return this.router.createUrlTree(['/courses']);
   }
 }

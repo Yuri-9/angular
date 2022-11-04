@@ -7,6 +7,7 @@ import { Router } from '@angular/router';
 import { AuthService } from 'src/app/auth/services/auth.service';
 import { IModal } from 'src/app/shared/components';
 import { ReplaySubject, takeUntil } from 'rxjs';
+import { AuthStateFacade } from 'src/app/auth/store/auth.facade';
 
 @Component({
   selector: 'app-login',
@@ -27,24 +28,38 @@ export class LoginComponent extends HelperInputPassword implements OnInit, OnDes
   isOpenModal = false;
   redirectUrl = 'login';
 
-  constructor(private _authService: AuthService, private _router: Router) {
+  constructor(private authService: AuthService, private router: Router, private authStateFacade: AuthStateFacade) {
     super();
   }
 
   login(): void {
     if (this.formLogin.form.status === 'VALID') {
-      this._authService.login(this.userData).pipe(takeUntil(this.destroy$)).subscribe();
-      this.openModal();
+      const user: User = { ...this.formLogin.form.value, name: '' };
+      this.authStateFacade.login(user);
+      this.authStateFacade.isAuthorized$.pipe(takeUntil(this.destroy$)).subscribe(isAuthorized => {
+        if (isAuthorized) {
+          this.optionModalInfo.message = 'Successful!!';
+          this.redirectUrl = 'courses';
+          this.openModal();
+        }
+      });
+      this.authStateFacade.errorMessageLogin$.pipe(takeUntil(this.destroy$)).subscribe(loginErrorMessage => {
+        if (loginErrorMessage) {
+          this.optionModalInfo.message = 'The email or password is incorrect';
+          this.redirectUrl = 'login';
+          this.openModal();
+        }
+      });
     }
   }
 
   navigateToRegistration(event: Event): void {
     event.preventDefault();
-    this._router.navigateByUrl('/registration');
+    this.router.navigateByUrl('/registration');
   }
 
   confirmButtonModal(): void {
-    this._router.navigateByUrl(this.redirectUrl);
+    this.router.navigateByUrl(this.redirectUrl);
     this.closeModal();
   }
 
@@ -56,21 +71,8 @@ export class LoginComponent extends HelperInputPassword implements OnInit, OnDes
     this.isOpenModal = false;
   }
 
-  initModalState(): void {
-    this._authService.isAuthorized$.pipe(takeUntil(this.destroy$)).subscribe(isAuthorized => {
-      if (isAuthorized) {
-        this.optionModalInfo.message = 'Successful!!';
-        this.redirectUrl = 'courses';
-      } else {
-        this.optionModalInfo.message = 'The email or password is incorrect';
-        this.redirectUrl = 'login';
-      }
-    });
-  }
-
   ngOnInit(): void {
-    this.initModalState();
-    this.userData = this._authService.getUser();
+    this.userData = this.authService.getUser();
   }
 
   ngOnDestroy(): void {
