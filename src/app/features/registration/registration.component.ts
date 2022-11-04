@@ -7,7 +7,7 @@ import { ALERT_TEXT } from 'src/app/app-model';
 import { AuthStateFacade } from 'src/app/auth/store/auth.facade';
 import { IModal } from 'src/app/shared/components';
 import { HelperInputPassword } from '../helper/HelperInputPassword';
-import { InitialUser } from './registration-model';
+import { InitialUser, POPUP_LOGIN_TEXT } from './registration-model';
 
 @Component({
   selector: 'app-registration',
@@ -63,9 +63,7 @@ export class RegistrationComponent extends HelperInputPassword implements OnDest
   }
 
   openModal(): void {
-    this.optionModalInfo.message = this.isRegistered
-      ? 'Registration successful!'
-      : 'A user with this email already exists. Please login or use a different email';
+    this.optionModalInfo.message = this.isRegistered ? POPUP_LOGIN_TEXT.SUCCESSFUL : POPUP_LOGIN_TEXT.ERROR;
     this.isOpenModal = true;
   }
 

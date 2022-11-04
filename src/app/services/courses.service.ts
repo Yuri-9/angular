@@ -31,12 +31,6 @@ export class CoursesService {
       .pipe(delay(DELAY_REQUEST));
   }
 
-  getCourse(course: Course): Observable<SuccessfulRequest<Course> | FailedRequest> {
-    return this.http
-      .get<SuccessfulRequest<Course> | FailedRequest>(`${environment.baseUrl}/courses/${course.title}`)
-      .pipe(delay(DELAY_REQUEST));
-  }
-
   filterCourse(searchValue: string): Observable<Course[]> {
     const filterQueries = searchValue ? `title=${searchValue}` : '';
 

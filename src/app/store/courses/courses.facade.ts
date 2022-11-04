@@ -8,9 +8,7 @@ import { Course } from 'src/app/features/courses/courses-model';
 export class CoursesStateFacade {
   isCoursesLoading$ = this.store.select(CoursesSelectors.selectIsCoursesLoading);
   isCourseLoading$ = this.store.select(CoursesSelectors.selectIsCourseLoading);
-  isSearchingState$ = this.store.select(CoursesSelectors.selectIsSearchingState);
   courses$ = this.store.select(CoursesSelectors.selectAllCourses);
-  errorMessage$ = this.store.select(CoursesSelectors.selectAllCourses);
 
   constructor(private store: Store) {}
 

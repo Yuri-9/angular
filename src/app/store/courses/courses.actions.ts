@@ -11,9 +11,6 @@ export namespace CoursesActions {
   //single
   export const requestGetCourse = createAction('[Courses] request Get Course', props<{ id: string }>());
 
-  export const requestGetCourseSuccess = createAction('[Courses] request Get Course Success', props<{ course: Course }>());
-
-  export const requestGetCourseFail = createAction('[Courses] request Get Course Fail');
   //filtered
   export const requestGetFilteredCourses = createAction('[Courses] request Get Filtered Courses', props<{ searchValue: string }>());
 

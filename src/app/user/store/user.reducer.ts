@@ -16,7 +16,7 @@ export const initialState: UserState = {
 
 const reducer = createReducer(
   initialState,
-  on(UserActions.requestCurrentUserSuccess, (state, { isAdmin, name }): UserState => ({ ...state, isAdmin, name }))
+  on(UserActions.requestCurrentUserSuccess, (_, { isAdmin, name }): UserState => ({ isAdmin, name }))
 );
 
 export const userReducer = (state: UserState | undefined, action: Action): UserState => reducer(state, action);
